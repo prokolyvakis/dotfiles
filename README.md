@@ -14,6 +14,7 @@
 
 * [Theme](https://github.com/jessfraz/.vim)
 * [Configuration File](vimrc)
+* [vim FAQ](https://vimhelp.org/usr_toc.txt.html)
 
 ## tmux:
 
