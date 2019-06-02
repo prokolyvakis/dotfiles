@@ -21,5 +21,8 @@
 * [Theme](https://github.com/gpakosz/.tmux)
 * [Configuration File](tmux.conf)
 
+## Misc:
+* [Unofficial guide to dotfiles](https://dotfiles.github.io/)
+
 
 
