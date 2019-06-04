@@ -177,10 +177,9 @@ let g:solarized_termcolors=256
 let g:solarized_termtrans=1
 " let g:hybrid_use_Xresources = 1
 " let g:rehash256 = 1
-colorscheme solarized
+colorscheme gruvbox
 set guifont=Inconsolata:h15
 set guioptions-=L
-hi Comment      term=NONE   cterm=NONE  ctermfg=247 ctermbg=NONE    gui=NONE    guifg=#585858   guibg=NONE
 
 " This comes first, because we have mappings that depend on leader
 " With a map leader it's possible to do extra key combinations
