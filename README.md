@@ -1,6 +1,6 @@
 # An Ansible Playbook for my Dotfiles Configuration
 
-It sets up and configures the software I use for development on an Ubuntu desktop & MacOS distributions. 
+It automates the setup and configuration of the software I use for development on an Ubuntu desktop & MacOS distributions using [ansible](https://www.ansible.com/)! 
 
 ## What It Does
 - Installs packages.
