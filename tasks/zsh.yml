@@ -1,0 +1,85 @@
+---
+#########################################################################################
+# Zsh installation
+# based on : https://github.com/alexdesousa/dotfiles/blob/master/roles/zsh/tasks/main.yml
+#########################################################################################
+
+- name: zsh | Sets zsh as default shell for root
+  become: yes
+  become_user: root
+  command: chsh -s /bin/zsh
+  register: zsh_for_root
+  failed_when: zsh_for_root.rc >= 1
+  changed_when: zsh_for_root.rc == 0
+
+- name: zsh | Sets zsh as default shell for {{ username }}
+  become: yes
+  become_user: root
+  command: chsh -s /bin/zsh {{ username }}
+  register: zsh_for_user
+  failed_when: zsh_for_user.rc >= 1
+  changed_when: zsh_for_user.rc == 0
+
+- name: zsh | Checks for oh-my-zsh installation
+  stat:
+    path: "{{ home_path }}/.oh-my-zsh"
+  register: oh_my_zsh_stat
+
+# https://github.com/ohmyzsh/ohmyzsh#unattended-install
+# https://github.com/gantsign/ansible-role-oh-my-zsh/blob/master/tasks/install.yml
+- name: zsh | Installs oh-my-zsh (git)
+  git: 
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: "{{ home_path }}/.oh-my-zsh"
+    clone: yes
+    update: yes
+
+  when: not oh_my_zsh_stat.stat.exists
+
+- name: zsh | Checks out Spaceship zsh theme (git)
+  git:
+    repo: https://github.com/denysdovhan/spaceship-prompt.git
+    dest: "{{ home_path }}/.oh-my-zsh/custom/themes/spaceship-prompt"
+    clone: yes
+    update: yes
+    force: yes
+    depth: "1"
+  
+- name: zsh | Create link for Spaceship zsh theme
+  file:
+    src:  "{{ home_path }}/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme"
+    dest: "{{ home_path }}/.oh-my-zsh/themes/spaceship.zsh-theme"
+    state: link
+    force: true
+
+- name: zsh | Installs oath (plugin)
+  git:
+    repo: https://github.com/alexdesousa/oath.git
+    dest: "{{ home_path }}/.oh-my-zsh/custom/plugins/oath"
+    clone: yes
+    update: yes
+    force: yes
+
+- name: zsh | Installs autojump (plugin)
+  git:
+    repo: git://github.com/wting/autojump.git
+    dest: "{{ home_path }}/.oh-my-zsh/custom/plugins/autojump"
+    clone: yes
+    update: yes
+    force: yes
+
+- name: zsh | Installs zsh-syntax-highlighting (plugin)
+  git:
+    repo: git://github.com/zsh-users/zsh-syntax-highlighting.git
+    dest: "{{ home_path }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+    clone: yes
+    update: yes
+    force: yes
+
+- name: zsh | Installs zsh-autosuggestions (plugin)
+  git:
+    repo: git://github.com/zsh-users/zsh-autosuggestions.git
+    dest: "{{ home_path }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    clone: yes
+    update: yes
+    force: yes

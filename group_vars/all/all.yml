@@ -1,0 +1,9 @@
+name: Prodromos Kolyvakis
+username: promania
+email: prokolyvakis@gmail.com
+ubuntu_distribution: bionic
+update_all_packages: true
+home_path: "/home/{{ username }}"
+
+## dotfiles
+dotfiles_home: "{{ home_path }}/.dotfiles"

@@ -1,0 +1,21 @@
+---
+- block:
+    - name: Clone Powerline fonts installer
+      git:
+        repo: https://github.com/powerline/fonts.git
+        dest: "/home/{{ username }}/fonts"
+
+    - name: Run Powerline fonts installer
+      shell: "/home/{{ username }}/fonts/install.sh"
+      register: font_install
+
+    - debug:
+        var: font_install.stdout_lines
+
+    - name: Tidy up Powerline fonts installer
+      file:
+        path: "/home/{{ username }}/fonts"
+        state: absent
+
+  become: yes
+  become_user: "{{ username }}"

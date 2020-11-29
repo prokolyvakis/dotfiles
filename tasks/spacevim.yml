@@ -1,0 +1,4 @@
+- name: spacevim | Installs SpaceVim as root
+  become: yes
+  become_user: root
+  shell: "curl -sLf https://spacevim.org/install.sh | bash"
