@@ -7,7 +7,7 @@ It automates the setup and configuration of the software I use for development o
 - Sets up my dotfiles.
   - Super-custom git config
   - Sets up [Oh My Zsh](https://ohmyz.sh/) with the [Spaceship ZSH](https://github.com/denysdovhan/spaceship-prompt) theme.
-  - Sets up my [zshrc](./files/link/bashrc) file.
+  - Sets up my [zshrc](./files/link/zshrc) file.
 - Installs [SpaceVim](https://spacevim.org/)
 - Configures tmux with the [Oh My Tmux](https://github.com/gpakosz/.tmux) configuration.
 - Installs proper fonts.
@@ -17,7 +17,7 @@ It automates the setup and configuration of the software I use for development o
 2. Clone this repo and cd inside it: 
    
     ```
-    git clone https://github.com/prokolyvakis/dotfiles.git ~./.dotfiles && cd ~./.dotfiles
+    git clone https://github.com/prokolyvakis/dotfiles.git ~/.dotfiles && cd ~/.dotfiles
     ```
 
 3. Install the required Ansible roles: `ansible-galaxy install -r requirements.yml`
