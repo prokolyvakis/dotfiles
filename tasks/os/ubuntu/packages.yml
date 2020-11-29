@@ -1,0 +1,50 @@
+---
+
+- block:
+  # Ensure relevant APT keys are present on the system to support extra repositories added later.
+  # - name: Install signing keys from ubuntu keyserver
+  #   apt_key:
+  #     keyserver: keyserver.ubuntu.com
+  #     id: "{{ item }}"
+  #   loop: "{{ ubuntu_keyserver_keys }}"
+
+  # - name: Add ppa repositories
+  #   apt_repository:
+  #     repo: "{{ item }}"
+  #   loop: "{{ ppa_repositories }}"
+
+  # Enable extra repositories needed on the system. Mostly development, productivity etc.
+  # - name: Add package sources
+  #   apt_repository:
+  #     filename: "{{item.file}}"
+  #     repo: "{{item.repo}}"
+  #     state: present
+  #   loop: "{{ apt_repositories }}"
+
+  - name: Update apt cache
+    apt:
+      update_cache: yes
+      cache_valid_time: 3600
+    changed_when: false
+
+  - name: Remove packages
+    apt:
+      name: "{{ apt_packages_to_remove }}"
+      state: absent
+    loop: "{{ apt_packages_to_remove }}"
+
+  - name: Update all packages to the latest version
+    apt:
+      upgrade: dist
+    when: update_all_packages == True
+
+  - name: "Install packages"
+    apt:
+      name: "{{ apt_packages }}"
+
+  # - name: Install debs
+  #   apt:
+  #     deb: "{{ item }}"
+  #   with_items: "{{ debs }}"
+
+  become: yes

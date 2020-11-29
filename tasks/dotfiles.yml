@@ -1,0 +1,24 @@
+---
+- block:
+
+  - name: Copy dotfiles folder
+    copy:
+      src: files
+      dest: "{{ dotfiles_home }}/"
+
+  - name: Link dotfiles
+    file:
+      src: "{{ dotfiles_home }}/files/link/{{ item }}"
+      dest: "/home/{{ username }}/.{{ item }}"
+      state: link
+      force: true
+    with_items: "{{ linked_dotfiles }}"
+
+  # - name: Link vim config
+  #   file:
+  #     src: "{{ dotfiles_home }}/files/link/vim"
+  #     dest: "/home/{{ username }}/.vim"
+  #     state: link
+      
+  become: yes
+  become_user: "{{ username }}"

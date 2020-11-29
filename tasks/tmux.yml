@@ -1,0 +1,24 @@
+---
+
+- block:
+  - name: tmux | Installs Oh My Tmux configuration (git)
+    git:
+      repo: https://github.com/gpakosz/.tmux.git
+      dest: "{{ home_path }}/.tmux"
+      clone: yes
+      update: yes
+      force: yes
+  
+  - name: tmux | Create link for tmux.conf
+    file:
+      src:  "{{ home_path }}/.tmux/.tmux.conf"
+      dest: "{{ home_path }}/.tmux.conf"
+      state: link
+      force: true
+
+  - name: tmux | Create link for tmux.conf.local
+    file:
+      src:  "{{ home_path }}/.tmux/.tmux.conf.local"
+      dest: "{{ home_path }}/.tmux.conf.local"
+      state: link
+      force: true

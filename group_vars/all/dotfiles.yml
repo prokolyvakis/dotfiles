@@ -1,0 +1,7 @@
+---
+linked_dotfiles:
+  - bash_profile
+  - bashrc
+  - gitconfig
+  - gitignore
+  - zshrc

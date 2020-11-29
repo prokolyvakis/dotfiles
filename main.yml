@@ -1,0 +1,36 @@
+---
+# Should be refactored like this one:
+# https://github.com/alexdesousa/dotfiles
+
+- hosts: all
+  connection: local
+
+  tasks:
+    - include: tasks/user.yml
+      tags: user
+
+    - include: tasks/packages.yml
+      tags: packages
+
+    - include: tasks/node.yml
+      tags: node
+
+    - include: tasks/dotfiles.yml
+      tags: dotfiles
+
+    - include: tasks/fonts.yml
+      tags: fonts
+
+    - include: tasks/zsh.yml
+      tags: zsh
+
+    - include: tasks/tmux.yml
+      tags: tmux
+
+    - include: tasks/spacevim.yml
+      tags: fonts
+
+    # - include: tasks/random_stuff.yml
+    #   tags: random_config
+
+

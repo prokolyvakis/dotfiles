@@ -1,0 +1,46 @@
+---
+# https://github.com/Mayccoll/Gogh
+# https://blog.ssdnodes.com/blog/13-smart-terminal-tools-to-level-up-your-linux-servers/
+#  Useful stuff for future ideas:
+#  * https://github.com/sobolevn/dotfiles/tree/master/macos
+#  * https://github.com/sobolevn/dotfiles/blob/master/Brewfile
+
+- block:
+  - name: update
+    homebrew: update_homebrew=yes
+
+  - name: install taps
+    homebrew_tap:
+      name: "{{ homebrew_taps }}"
+    loop: "{{ homebrew_taps }}"
+
+  - name: install formulae
+    homebrew:
+      name: "{{ homebrew_packages }}"
+    loop: "{{ homebrew_packages }}"
+
+  - name: install universal ctags
+    homebrew:
+      name: universal-ctags/universal-ctags/universal-ctags
+      install_options: HEAD
+
+  - name: start homebrew services
+    command: brew services start {{ item }}
+    with_items:
+      - syncthing
+
+  # Not sure if this is needed anymore - was used for installing casks
+  - name: authenticate sudo
+    ping:
+    become: yes
+
+  - name: install casks
+    homebrew_cask:
+      name: "{{ homebrew_casks }}"
+    loop: "{{ homebrew_casks }}"
+
+  - name: install from app store
+    command: /usr/local/bin/mas install {{ item }}
+    with_items: "{{ mases }}"
+
+  become: yes
