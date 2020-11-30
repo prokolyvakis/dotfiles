@@ -6,6 +6,7 @@
 # Usage: [OPTIONS] .tests/test.sh
 #   - distro: a supported Docker distro version (default = "ubuntu2004")
 #   - playbook: a playbook in the tests directory (default = "main.yml")
+#   - only_docker: whether or not to only set up the docker instance (default: false)
 #   - cleanup: whether to remove the Docker container (default = true)
 #   - container_id: the --name to set for the container (default = timestamp)
 #   - test_idempotence: whether to test playbook's idempotence (default = true)
@@ -26,6 +27,7 @@ timestamp=$(date +%s)
 distro=${distro:-"ubuntu2004"}
 docker_owner=${docker_owner:-"geerlingguy"}
 playbook=${playbook:-"main.yml"}
+only_docker=${only_docker:-"false"}
 cleanup=${cleanup:-"false"}
 container_id=${container_id:-$timestamp}
 test_idempotence=${test_idempotence:-"false"}
@@ -39,6 +41,11 @@ docker pull $docker_owner/docker-$distro-ansible:latest
 docker run --detach --volume="$PWD":/etc/ansible/playbooks/playbook_under_test:rw --name $container_id $opts $docker_owner/docker-$distro-ansible:latest $init
 
 printf "\n"
+
+if [ "$only_docker" = true ]; then
+  printf ${green}"Docker instance configured. Now exiting ..." ${neutral}"\n"
+  exit 0
+fi
 
 # Install requirements if `requirements.yml` is present.
 if [ -f "$PWD/requirements.yml" ]; then
