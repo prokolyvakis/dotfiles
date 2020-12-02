@@ -9,6 +9,9 @@ branches:
   only:
     - master
 
+before_install:
+  - sudo apt-get update
+
 install:
   # Install pip.
   - sudo easy_install pip
