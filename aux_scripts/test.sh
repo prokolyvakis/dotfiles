@@ -3,7 +3,7 @@
 # Ansible playbook tester.
 # Based on geerlingguy's Ansible role tester.
 #
-# Usage: [OPTIONS] .tests/test.sh
+# Usage: [OPTIONS] ./aux_scripts/test.sh
 #   - distro: a supported Docker distro version (default = "ubuntu2004")
 #   - playbook: a playbook in the tests directory (default = "main.yml")
 #   - only_docker: whether or not to only set up the docker instance (default: false)
@@ -43,7 +43,7 @@ docker run --detach --volume="$PWD":/etc/ansible/playbooks/playbook_under_test:r
 printf "\n"
 
 if [ "$only_docker" = true ]; then
-  printf ${green}"Docker instance configured. Now exiting ..." ${neutral}"\n"
+  printf ${green}"Docker instance configured. Now exiting ..."${neutral}"\n"
   exit 0
 fi
 
