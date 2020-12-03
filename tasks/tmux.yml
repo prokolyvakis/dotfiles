@@ -22,3 +22,5 @@
       dest: "{{ home_path }}/.tmux.conf.local"
       state: link
       force: true
+  
+  become: yes

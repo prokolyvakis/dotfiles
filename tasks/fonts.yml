@@ -18,4 +18,3 @@
         state: absent
 
   become: yes
-  become_user: "{{ username }}"
