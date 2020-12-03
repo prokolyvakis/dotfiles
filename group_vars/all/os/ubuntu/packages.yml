@@ -14,15 +14,15 @@ apt_packages:
   - htop
   - htop
   - jq
-  - neofetch
-  - nmap
-  - rsync
-  - sl
-  - telnet
+  # - neofetch
+  # - nmap
+  # - rsync
+  # - sl
+  # - telnet
   - tmux
-  - tree
+  # - tree
   - vim
-  - vlc
+  # - vlc
   - wget
   # - zenmap
   - zip
