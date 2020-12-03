@@ -10,7 +10,7 @@
     copy:
       src: files
       dest: "{{ dotfiles_home }}/"
-    when: not dotfiles_home.stat.exists
+    when: not dotfiles_stat.stat.exists
 
   - name: Link dotfiles
     file:
