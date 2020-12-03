@@ -2,7 +2,7 @@ name: Prodromos Kolyvakis
 username: promania
 email: prokolyvakis@gmail.com
 ubuntu_distribution: bionic
-update_all_packages: true
+update_all_packages: false 
 home_path: "/home/{{ username }}"
 
 ## dotfiles

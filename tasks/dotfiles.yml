@@ -1,10 +1,16 @@
 ---
 - block:
 
+  - name: Checks if .dofiles exists in home path
+    stat:
+      path: "{{ home_path }}/.dotfiles"
+    register: dotfiles_stat
+
   - name: Copy dotfiles folder
     copy:
       src: files
       dest: "{{ dotfiles_home }}/"
+    when: not dotfiles_home.stat.exists
 
   - name: Link dotfiles
     file:
