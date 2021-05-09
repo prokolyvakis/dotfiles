@@ -22,7 +22,7 @@
   - name: Link dotfiles
     file:
       src: "{{ dotfiles_home }}/files/link/{{ item }}"
-      dest: "/home/{{ username }}/.{{ item }}"
+      dest: "/{{ home_path }}/.{{ item }}"
       state: link
       force: true
     with_items: "{{ linked_dotfiles }}"
