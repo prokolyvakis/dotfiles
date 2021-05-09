@@ -43,4 +43,4 @@
     command: /usr/local/bin/mas install {{ item }}
     with_items: "{{ mases }}"
 
-  become: yes
+  become: no 
