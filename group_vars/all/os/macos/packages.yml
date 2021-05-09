@@ -41,6 +41,7 @@ homebrew_packages:
   - ripgrep
   - ruby-install
   - syncthing
+  - svn # needed for casks
   - tldr
   - tmux
   - tree
@@ -72,10 +73,10 @@ homebrew_casks:
   - quicklook-json
   - sf-symbols
   - slack
-  - transmit
+  - transmission 
   - zoomus
   - skype
-  - the-unarchive
+  - the-unarchiver
   - visual-studio-code
   - vlc
   - zotero

@@ -29,11 +29,6 @@
     with_items:
       - syncthing
 
-  # Not sure if this is needed anymore - was used for installing casks
-  - name: authenticate sudo
-    ping:
-    become: yes
-
   - name: install casks
     homebrew_cask:
       name: "{{ homebrew_casks }}"

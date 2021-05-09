@@ -3,10 +3,10 @@
     - name: Clone Powerline fonts installer
       git:
         repo: https://github.com/powerline/fonts.git
-        dest: "/home/{{ username }}/fonts"
+        dest: "{{ home_path }}/fonts"
 
     - name: Run Powerline fonts installer
-      shell: "/home/{{ username }}/fonts/install.sh"
+      shell: "{{ home_path }}/fonts/install.sh"
       register: font_install
 
     - debug:
@@ -14,7 +14,7 @@
 
     - name: Tidy up Powerline fonts installer
       file:
-        path: "/home/{{ username }}/fonts"
+        path: "{{ home_path }}/fonts"
         state: absent
 
   become: yes
