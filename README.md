@@ -21,7 +21,8 @@ It automates the setup and configuration of the software I use for development o
     ```
 
 3. Install the required Ansible roles: `ansible-galaxy install -r requirements.yml`
-4. Run it: `ansible-playbook -i inventory main.yml -b -K`
+4. Adapt accordingly the [config file](./group_vars/all/all.yml).
+5. Run it: `sudo ansible-playbook -i inventory main.yml -b -K --skip-tags user`
 
 ## Testing Process 
 Requires Docker: `./aux_scripts/test.sh`

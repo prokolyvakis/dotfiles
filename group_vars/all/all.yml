@@ -3,7 +3,7 @@ username: promania
 email: prokolyvakis@gmail.com
 ubuntu_distribution: bionic
 update_all_packages: false 
-home_path: "/home/{{ username }}"
+home_path: "/{{ 'home' if ansible_os_family != 'Darwin' else 'Users' }}/{{ username }}"
 
 ## dotfiles
 dotfiles_home: "{{ home_path }}/.dotfiles"

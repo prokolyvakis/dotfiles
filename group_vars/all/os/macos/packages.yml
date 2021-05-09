@@ -16,7 +16,6 @@ homebrew_taps:
   - homebrew/services
 
 homebrew_packages:
-  - ansible
   - bat
   - curl
   - deno

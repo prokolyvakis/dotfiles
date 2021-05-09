@@ -3,7 +3,7 @@
 
 - include: os/macos/packages.yml
   when:
-    - ansible_os_family == "MacOSX"
+    - ansible_os_family == "Darwin"
 
 - include: os/ubuntu/packages.yml
   when:
