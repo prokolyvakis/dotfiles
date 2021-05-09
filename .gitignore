@@ -4,11 +4,6 @@
 # Vim swap files
 .*.swp
 
-# Emacs auto-save and backup files
-*~
-\#*#
-.#*
-
 # Vim caches and metadata, backups, bundles, etc
 /vim/tmp
 /vim/.netrwhist
@@ -23,5 +18,8 @@
 /ansible/hosts.yml
 
 /oh-my-zsh
+
+/files/link/bashrc
+/files/link/zshrc
 
 .vstags
