@@ -1,6 +1,6 @@
 # An Ansible Playbook for my Dotfiles Configuration
 
-It automates the setup and configuration of the software I use for development on an Ubuntu desktop & MacOS distributions using [ansible](https://www.ansible.com/)! 
+It automates the setup and configuration of the software I use for development on Ubuntu & Darwin distributions using [ansible](https://www.ansible.com/)! 
 
 ## What It Does
 - Installs packages.
@@ -25,12 +25,13 @@ It automates the setup and configuration of the software I use for development o
 5. Run it: `ansible-playbook -i inventory main.yml -b -K --skip-tags user`
 
 ## Testing Process 
-Requires Docker: `./aux_scripts/test.sh`
+ `make docker-test`, it requires docker!
 
 ## Miscellaneous
 1. To update this repo, run: `make repo-update `
 2. Check the [Unofficial guide to dotfiles](https://dotfiles.github.io/) for more ideas!
-3. Regarding terminal themes:
-   1. On mac, the [Material Design theme](https://github.com/MartinSeeler/iterm2-material-design) on iTerm is pretty cool.
+3. With regard to terminal:
+   1. On Darwin, the [Material Design theme](https://github.com/MartinSeeler/iterm2-material-design) on iTerm is pretty cool.
    2. On GNU/Linux, check [Gogh](https://mayccoll.github.io/Gogh/)!
+   3. [Starship terminal](https://starship.rs/) is *maybe* worth exploring!
 4. Last but not least, the [Hack font](https://sourcefoundry.org/hack/) is pretty awesome!
