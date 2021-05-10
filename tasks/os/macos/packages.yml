@@ -29,6 +29,10 @@
     with_items:
       - syncthing
 
+  # https://github.com/ansible/ansible/issues/7637
+  - name: modify PATH to enable cask installs
+    command: export PATH=$PATH:/usr/local/bin
+
   - name: install casks
     homebrew_cask:
       name: "{{ homebrew_casks }}"
