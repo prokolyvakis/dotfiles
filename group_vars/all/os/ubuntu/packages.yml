@@ -18,7 +18,6 @@ apt_packages:
   # - nmap
   # - rsync
   # - sl
-  # - telnet
   - tmux
   # - tree
   - vim
