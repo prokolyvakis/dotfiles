@@ -26,22 +26,29 @@ homebrew_packages:
   - fzf
   - git
   - git-lfs
+  - glances
+  - htop
   - httpie
   - jq
+  - lazydocker
   - macvim
-  - mas # used to install mases
+  - mas       # used to install mases
+  - ncdu
   - nnn
   - node
   - nvm
   - onefetch
   - pandoc
   - peco
+  - pipx
   - progress
+  - pyenv
   - reattach-to-user-namespace
   - ripgrep
   - ruby-install
   - syncthing
-  - svn # needed for casks
+  - svn       # needed for casks
+  - thefuck
   - tldr
   - tmux
   - tree
@@ -52,9 +59,12 @@ homebrew_packages:
   # - ykman
   
 homebrew_casks:
+  # - alfred
+  - appcleaner
   - bartender
+  - brave-browser
   - bitbar
-  - itsycal
+  - docker
   # Fonts
   - font-atkinson-hyperlegible
   - font-fira-mono
@@ -62,10 +72,10 @@ homebrew_casks:
   - font-hasklig
   - font-source-code-pro
   - google-chrome
-  - brave-browser
   - hammerspoon
+  - itsycal
   - netnewswire
-  - night-owl
+  - nightowl
   - postman
   - qlcolorcode
   - qlmarkdown
@@ -73,17 +83,13 @@ homebrew_casks:
   - quicklook-json
   - sf-symbols
   - slack
+  - texpad
   - transmission 
-  - zoomus
-  - skype
+  - typora
   - the-unarchiver
   - visual-studio-code
   - vlc
   - zotero
-  - texpad
-  - typora
-  - appcleaner
-  # - alfred
 
 mases:
   - 937984704   # Amphetamine
