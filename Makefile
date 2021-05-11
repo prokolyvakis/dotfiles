@@ -119,6 +119,10 @@ docker-test: ## make a test # Test on an Ubuntu docker instance.
 repo-update: ## make a repo update # Update the repo if no local changes are made.
 	@./aux_scripts/repo-update.sh
 
+.PHONY: dotfiles-update
+dotfiles-update: ## update only the dotfiles and link them accordingly.
+	@ansible-playbook -i inventory main.yml -b -K --tags "dotfiles,dotfiles-update"
+
 .PHONY: mandatory-host-param mandatory-file-param
 mandatory-host-param:
 	@[ ! -z $(host) ]
