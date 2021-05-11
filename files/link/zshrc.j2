@@ -128,7 +128,7 @@ source "{{home_path}}/.bashrc"
 #   2. MAKE TERMINAL BETTER
 #   -----------------------------
 
-alias tmux='conda deactivate; tmux'         # So as to properly setting the conda environment
+alias tmux='command -v conda > /dev/null && conda deactivate; tmux'         # So as to properly setting the conda environment
 alias cp='cp -iv'                           # Preferred 'cp' implementation
 alias mv='mv -iv'                           # Preferred 'mv' implementation
 alias mkdir='mkdir -pv'                     # Preferred 'mkdir' implementation
