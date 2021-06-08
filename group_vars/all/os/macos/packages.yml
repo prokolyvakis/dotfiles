@@ -30,6 +30,8 @@ homebrew_packages:
   - htop
   - httpie
   - jq
+  - kubectl
+  - kubectx
   - lazydocker
   - macvim
   - mas       # used to install mases
