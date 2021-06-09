@@ -60,10 +60,10 @@
     update: yes
     force: yes
 
-- name: zsh | Installs autojump (plugin)
+- name: zsh | Installs forgit (plugin)
   git:
-    repo: https://github.com/wting/autojump.git
-    dest: "{{ home_path }}/.oh-my-zsh/custom/plugins/autojump"
+    repo: https://github.com/wfxr/forgit.git
+    dest: "{{ home_path }}/.oh-my-zsh/custom/plugins/forgit"
     clone: yes
     update: yes
     force: yes
