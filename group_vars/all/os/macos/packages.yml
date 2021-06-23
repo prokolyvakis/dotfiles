@@ -19,6 +19,7 @@ homebrew_packages:
   - bat
   - curl
   - deno
+  - dust
   - exa
   - fasd
   - fd
