@@ -27,6 +27,7 @@ homebrew_packages:
   - fzf
   - git
   - git-lfs
+  - grex
   - glances
   - htop
   - httpie
@@ -44,11 +45,12 @@ homebrew_packages:
   - pandoc
   - peco
   - pipx
+  - procs
   - progress
   - pyenv
   - reattach-to-user-namespace
   - ripgrep
-  - ruby-install
+  - sd
   - syncthing
   - svn       # needed for casks
   - thefuck
