@@ -49,6 +49,7 @@ homebrew_packages:
   - procs
   - progress
   - pyenv
+  - pyenv-virtualenv
   - reattach-to-user-namespace
   - ripgrep
   - sd
