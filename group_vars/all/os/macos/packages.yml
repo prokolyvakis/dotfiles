@@ -89,7 +89,7 @@ homebrew_casks:
   - quicklook-json
   - sf-symbols
   - slack
-  - texpad
+  - texifier
   - transmission 
   - typora
   - the-unarchiver
