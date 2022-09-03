@@ -83,7 +83,7 @@ homebrew_casks:
   - nightowl
   - postman
   - qlcolorcode
-  - sbarex-qlmarkdown
+  - qlmarkdown
   - quicklook-csv
   - quicklook-json
   - sf-symbols
