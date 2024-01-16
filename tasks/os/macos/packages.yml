@@ -9,11 +9,6 @@
   - name: update
     homebrew: update_homebrew=yes
 
-  - name: install taps
-    homebrew_tap:
-      name: "{{ homebrew_taps }}"
-    loop: "{{ homebrew_taps }}"
-
   - name: install formulae
     homebrew:
       name: "{{ homebrew_packages }}"
