@@ -9,22 +9,17 @@
 homebrew_packages:
   - bat
   - curl
-  - deno
   - dust
   - exa
-  - fasd
   - fd
   - fselect
   - fzf
   - git
   - git-lfs
-  - grex
   - glances
   - htop
   - httpie
   - jq
-  - kubectl
-  - kubectx
   - lazydocker
   - macvim
   - mas       # used to install mases
@@ -41,7 +36,6 @@ homebrew_packages:
   - progress
   - pyenv
   - pyenv-virtualenv
-  - reattach-to-user-namespace
   - ripgrep
   - sd
   - syncthing
@@ -53,13 +47,12 @@ homebrew_packages:
   - watch
   - wget
   - youtube-dl
+  - zoxide
   - zsh
   
 homebrew_casks:
   - appcleaner
   - bartender
-  - brave-browser
-  - bitbar
   - docker
   # Fonts
   - font-atkinson-hyperlegible
@@ -72,11 +65,6 @@ homebrew_casks:
   - itsycal
   - netnewswire
   - nightowl
-  - postman
-  - qlcolorcode
-  - qlmarkdown
-  - quicklook-csv
-  - quicklook-json
   - sf-symbols
   - slack
   - spotify
@@ -91,5 +79,4 @@ homebrew_casks:
 mases:
   - 937984704   # Amphetamine
   - 1278508951  # Trello
-  # - 605732865   # RSS Bot
   # - 497799835   # Xcode
