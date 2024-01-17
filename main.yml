@@ -6,32 +6,29 @@
   connection: local
 
   tasks:
-    - include: tasks/user.yml
+    - import_tasks: tasks/user.yml
       tags: user
 
-    - include: tasks/packages.yml
+    - import_tasks: tasks/packages.yml
       tags: packages
 
-    - include: tasks/node.yml
+    - import_tasks: tasks/node.yml
       tags: node
       when:
         - ansible_os_family != "Darwin"
 
-    - include: tasks/dotfiles.yml
+    - import_tasks: tasks/dotfiles.yml
       tags: dotfiles
 
-    - include: tasks/fonts.yml
+    - import_tasks: tasks/fonts.yml
       tags: fonts
 
-    - include: tasks/zsh.yml
+    - import_tasks: tasks/zsh.yml
       tags: zsh
 
-    - include: tasks/tmux.yml
+    - import_tasks: tasks/tmux.yml
       tags: tmux
 
-    - include: tasks/spacevim.yml
+    - import_tasks: tasks/spacevim.yml
       tags: fonts
-
-    # - include: tasks/random_stuff.yml
-    #   tags: random_config
 

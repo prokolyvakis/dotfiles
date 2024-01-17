@@ -9,6 +9,11 @@
   - name: update
     homebrew: update_homebrew=yes
 
+  - name: install taps
+    community.general.homebrew_tap:
+      name: "{{ homebrew_taps }}"
+    loop: "{{ homebrew_taps }}"
+
   - name: install formulae
     homebrew:
       name: "{{ homebrew_packages }}"
@@ -24,17 +29,13 @@
     with_items:
       - syncthing
 
-  # https://github.com/ansible/ansible/issues/7637
-  - name: modify PATH to enable cask installs
-    command: export PATH=$PATH:/usr/local/bin
-
   - name: install casks
     homebrew_cask:
       name: "{{ homebrew_casks }}"
     loop: "{{ homebrew_casks }}"
 
   - name: install from app store
-    command: /usr/local/bin/mas install {{ item }}
+    command: mas install {{ item }}
     with_items: "{{ mases }}"
 
   become: no 
