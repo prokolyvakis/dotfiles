@@ -1,4 +1,9 @@
-- name: spacevim | Installs SpaceVim as root
+- name: spacevim | Installs SpaceVim as user
   become: yes
-  become_user: root
+  become_user: "{{ username }}"
   shell: "curl -sLf https://spacevim.org/install.sh | bash"
+  args:
+    executable: /bin/bash
+  environment:
+    HOME: "{{ home_path }}"
+
