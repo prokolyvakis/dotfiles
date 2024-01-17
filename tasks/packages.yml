@@ -1,10 +1,10 @@
 ---
 
 
-- include: os/macos/packages.yml
+- import_tasks: os/macos/packages.yml
   when:
     - ansible_os_family == "Darwin"
 
-- include: os/ubuntu/packages.yml
+- import_tasks: os/ubuntu/packages.yml
   when:
     - ansible_os_family == "Debian"

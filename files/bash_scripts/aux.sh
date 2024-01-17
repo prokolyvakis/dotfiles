@@ -11,9 +11,4 @@ export PATH="/usr/local/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 eval "$(thefuck --alias)"
-eval "$(fasd --init auto)"
 
-# Kubernetes related:
-alias k="kubectl"
-alias kctx="kubectx"
-alias kns="kubens"
