@@ -173,6 +173,7 @@
 	insteadOf = "gh:"
 	pushInsteadOf = "github:"
 	pushInsteadOf = "git://github.com/"
+	insteadOf = https://github.com/
 
 [url "git://github.com/"]
 
@@ -187,3 +188,10 @@
 [url "git://gist.github.com/"]
 
 	insteadOf = "gist:"
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+[init]
+	defaultBranch = main
