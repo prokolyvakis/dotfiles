@@ -24,5 +24,8 @@
 
 .vstags
 
+# Claude Code local settings
+.claude/
+
 # Documentation (local planning/design docs)
 /docs/
