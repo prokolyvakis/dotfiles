@@ -1,0 +1,4 @@
+# Source all shell modules
+for file in ~/.shell/*.sh; do
+  [ -r "$file" ] && source "$file"
+done
