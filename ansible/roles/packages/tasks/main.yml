@@ -1,0 +1,8 @@
+---
+- name: Include macOS package tasks
+  ansible.builtin.include_tasks: macos.yml
+  when: ansible_os_family == 'Darwin'
+
+- name: Include Ubuntu package tasks
+  ansible.builtin.include_tasks: ubuntu.yml
+  when: ansible_os_family == 'Debian'

@@ -1,0 +1,4 @@
+---
+- name: Clean Homebrew cache
+  ansible.builtin.command: brew cleanup
+  when: ansible_os_family == 'Darwin'
