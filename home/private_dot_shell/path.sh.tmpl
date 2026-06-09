@@ -1,0 +1,28 @@
+#!/bin/sh
+# PATH and compiler flags
+
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.pyenv/bin:$PATH"
+
+{{ if eq .chezmoi.os "darwin" -}}
+# Homebrew paths (Apple Silicon vs Intel)
+if [ -d "/opt/homebrew" ]; then
+  BREW_PREFIX="/opt/homebrew"
+else
+  BREW_PREFIX="/usr/local"
+fi
+
+export PATH="$BREW_PREFIX/bin:$PATH"
+export PATH="$BREW_PREFIX/opt/openjdk/bin:$PATH"
+export PATH="$BREW_PREFIX/opt/curl/bin:$PATH"
+
+export PKG_CONFIG_PATH="$BREW_PREFIX/opt/libffi/lib/pkgconfig:$BREW_PREFIX/opt/curl/lib/pkgconfig"
+export LDFLAGS="-L$BREW_PREFIX/opt/zlib/lib -L$BREW_PREFIX/opt/bzip2/lib -L$BREW_PREFIX/opt/libffi/lib -L$BREW_PREFIX/opt/curl/lib"
+export CPPFLAGS="-I$BREW_PREFIX/opt/zlib/include -I$BREW_PREFIX/opt/bzip2/include -I$BREW_PREFIX/opt/openjdk/include -I$BREW_PREFIX/opt/curl/include"
+{{ end -}}
+
+# Flutter
+if [ -d "$HOME/Documents/development/flutter/bin" ]; then
+  export PATH="$PATH:$HOME/Documents/development/flutter/bin"
+fi
+export PATH="$PATH:$HOME/.pub-cache/bin"
