@@ -1,6 +1,0 @@
----
-
-### Stuff to run as root
-
-- name: Add user to docker group
-  shell: "usermod -a -G docker {{ username }}"
