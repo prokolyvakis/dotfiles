@@ -5,7 +5,11 @@
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias mkdir='mkdir -pv'
+{{ if eq .chezmoi.os "darwin" -}}
 alias ll='ls -FGlAhp'
+{{ else -}}
+alias ll='ls -FlAhp --color'
+{{ end -}}
 alias less='less -FSRXc'
 alias cd..='cd ../'
 alias ..='cd ../'
@@ -53,9 +57,9 @@ pyclean() {
 
 # Searching
 alias qfind="find . -name "
-ff() { /usr/bin/find . -name "$@"; }
-ffs() { /usr/bin/find . -name "$@"'*'; }
-ffe() { /usr/bin/find . -name '*'"$@"; }
+ff() { find . -name "$@"; }
+ffs() { find . -name "$@"'*'; }
+ffe() { find . -name '*'"$@"; }
 
 # Process management
 findPid() { lsof -t -c "$@"; }
