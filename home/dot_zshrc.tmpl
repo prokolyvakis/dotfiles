@@ -21,6 +21,14 @@ autoload -U compinit && compinit
 source "$ZSH/oh-my-zsh.sh"
 
 # Source all shell modules
-for file in ~/.shell/*.sh; do
-  [ -r "$file" ] && source "$file"
-done
+if [ -d ~/.shell ] && ls ~/.shell/*.sh 1>/dev/null 2>&1; then
+  for file in ~/.shell/*.sh; do
+    if [ -r "$file" ]; then
+      source "$file"
+    else
+      echo "[shell] WARNING: Cannot read $file (check permissions)" >&2
+    fi
+  done
+else
+  echo "[shell] WARNING: ~/.shell/ directory missing or empty" >&2
+fi

@@ -32,6 +32,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install chezmoi
-        run: sh -c "$(curl -fsLS get.chezmoi.io)" -- -b /usr/local/bin
+        run: sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/bin" && echo "$HOME/bin" >> "$GITHUB_PATH"
       - name: Verify templates
         run: chezmoi init --source=home/ --dry-run --verbose

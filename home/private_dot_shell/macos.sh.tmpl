@@ -28,7 +28,7 @@ EOT
 }
 
 # Spotlight search
-spotlight() { mdfind "kMDItemDisplayName == '$@'wc"; }
+spotlight() { mdfind "kMDItemDisplayName == '$@'"; }
 
 # DNS
 alias flushDNS='dscacheutil -flushcache'

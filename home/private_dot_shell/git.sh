@@ -1,4 +1,4 @@
-#!/bin/sh
+# shellcheck shell=bash
 # Git shell aliases — shell wrappers that invoke git commands.
 # Git-internal aliases (log formats, diff options) live in .gitconfig [alias].
 
@@ -171,7 +171,8 @@ gstat() {
   unset IFS
 }
 
-# Download folder from git repository via svn
+# Download a subfolder from a GitHub repo using svn
+# Note: only works with repos using 'master' as default branch
 git-downloadfolder() {
   url="$1"
   svn checkout "${url/tree\/master/trunk}"

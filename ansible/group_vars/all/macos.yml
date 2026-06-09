@@ -1,12 +1,11 @@
 ---
-homebrew_taps:
-  - homebrew/cask-fonts
+homebrew_taps: []
 
 homebrew_packages:
   - bat
   - curl
   - dust
-  - exa
+  - eza
   - fd
   - fselect
   - fzf
@@ -43,7 +42,7 @@ homebrew_packages:
   - universal-ctags
   - watch
   - wget
-  - youtube-dl
+  - yt-dlp
   - zoxide
   - zsh
 

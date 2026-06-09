@@ -6,7 +6,12 @@
     clone: true
     update: true
     version: master
-  notify: Set zsh as default shell
+
+- name: Ensure zsh is default shell
+  ansible.builtin.user:
+    name: "{{ username }}"
+    shell: /bin/zsh
+  become: true
 
 - name: Install Spaceship zsh theme
   ansible.builtin.git:

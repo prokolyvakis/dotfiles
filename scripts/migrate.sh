@@ -51,10 +51,22 @@ for dotfile in "${OLD_SYMLINKS[@]}"; do
         warn "$target is root-owned symlink → will sudo rm"
       fi
       # Back up the link target content
-      cp -L "$target" "$BACKUP_DIR/$dotfile" 2>/dev/null || true
+      if ! cp -L "$target" "$BACKUP_DIR/$dotfile" 2>/dev/null; then
+        warn "Could not back up $target"
+      fi
     fi
   elif [ -f "$target" ]; then
-    cp "$target" "$BACKUP_DIR/$dotfile" 2>/dev/null || true
+    if ! cp "$target" "$BACKUP_DIR/$dotfile" 2>/dev/null; then
+      warn "Could not back up $target"
+    fi
+  fi
+done
+
+# Verify critical files were backed up before proceeding to deletion
+for critical in gitconfig zshrc; do
+  if [ -f "$HOME/.$critical" ] && [ ! -f "$BACKUP_DIR/$critical" ]; then
+    fail "Failed to back up ~/.$critical — aborting to prevent data loss"
+    exit 1
   fi
 done
 
@@ -143,7 +155,8 @@ if [ -f "$HOME/.config/nvim/init.lua" ]; then
 elif [ -d "$HOME/.config/nvim" ]; then
   warn "~/.config/nvim/ exists but no init.lua (existing nvim config — not overwritten)"
 else
-  info "~/.config/nvim/ will be created on first chezmoi apply with no existing config"
+  fail "~/.config/nvim/ not created by chezmoi — check that private_dot_config/private_nvim/ exists in the chezmoi source"
+  pass=false
 fi
 echo ""
 
@@ -152,7 +165,10 @@ echo "=== Migration Summary ==="
 if $pass; then
   info "Migration complete!"
 else
-  warn "Migration finished with some issues (see above)"
+  fail "Migration finished with issues (see above)"
+  echo ""
+  echo "Backed up to: $BACKUP_DIR"
+  exit 1
 fi
 echo ""
 echo "Backed up to: $BACKUP_DIR"

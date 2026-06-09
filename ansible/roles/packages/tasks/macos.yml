@@ -7,6 +7,7 @@
   community.general.homebrew_tap:
     name: "{{ item }}"
   loop: "{{ homebrew_taps }}"
+  when: homebrew_taps | length > 0
 
 - name: Install Homebrew formulae
   community.general.homebrew:
@@ -23,15 +24,30 @@
   loop: "{{ homebrew_services }}"
   register: packages_brew_service
   changed_when: "'Successfully started' in packages_brew_service.stdout"
-  failed_when: false
+  failed_when: >-
+    packages_brew_service.rc != 0 and
+    'already started' not in (packages_brew_service.stderr | default('')) and
+    'already started' not in (packages_brew_service.stdout | default(''))
 
 - name: Install Homebrew casks
   community.general.homebrew_cask:
     name: "{{ homebrew_casks }}"
     state: present
 
+- name: Check Mac App Store sign-in
+  ansible.builtin.command: mas account
+  register: packages_mas_account
+  changed_when: false
+  failed_when: false
+
 - name: Install Mac App Store apps
   ansible.builtin.command: mas install {{ item }}
   loop: "{{ mases }}"
   register: packages_mas_result
   changed_when: "'is already installed' not in packages_mas_result.stdout"
+  when: packages_mas_account.rc == 0
+
+- name: Warn about Mac App Store
+  ansible.builtin.debug:
+    msg: "Skipping MAS apps — not signed into Mac App Store. Sign in via App Store.app and re-run."
+  when: packages_mas_account.rc != 0

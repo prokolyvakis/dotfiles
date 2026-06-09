@@ -12,6 +12,8 @@ elif [ -d "/usr/local/opt/nvm" ]; then
   [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && \. "/usr/local/opt/nvm/etc/bash_completion"
 fi
 
-# Git-cloned nvm (Linux)
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+# Fallback: git-cloned nvm (Linux, or macOS without Homebrew nvm)
+if [ ! -d "/opt/homebrew/opt/nvm" ] && [ ! -d "/usr/local/opt/nvm" ]; then
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+fi

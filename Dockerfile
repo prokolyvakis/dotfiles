@@ -2,8 +2,9 @@ FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV HOME=/root
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# Minimal bootstrap — only what's needed to run ansible + chezmoi
+# Bootstrap dependencies for ansible + chezmoi
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       git \
@@ -11,7 +12,6 @@ RUN apt-get update && \
       sudo \
       python3 \
       python3-pip \
-      python3-venv \
       ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
@@ -48,10 +48,10 @@ RUN zsh --version
 RUN nvim --version | head -1
 
 # Verify: Ansible idempotence — second run should report no changes
-RUN cd ansible && ansible-playbook playbook.yml --diff \
-    | tee /tmp/idempotence.txt && \
-    grep -q 'changed=0' /tmp/idempotence.txt && \
-    echo "OK: idempotent" || \
-    echo "WARN: not fully idempotent (check output above)"
+RUN cd ansible && ansible-playbook playbook.yml --diff 2>&1 \
+    | tee /tmp/idempotence.txt; \
+    grep -q 'changed=0' /tmp/idempotence.txt \
+    && echo "OK: idempotent" \
+    || { echo "ERROR: not idempotent"; cat /tmp/idempotence.txt; exit 1; }
 
 CMD ["zsh"]

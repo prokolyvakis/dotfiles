@@ -1,4 +1,4 @@
-#!/bin/sh
+# shellcheck shell=bash
 # General aliases and utility functions
 
 # Terminal improvements
@@ -52,7 +52,8 @@ extract() {
 }
 
 pyclean() {
-  find . | grep -E "(__pycache__|\.py[cod]$)" | xargs rm -rf
+  find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null
+  find . -type f -name '*.py[cod]' -delete 2>/dev/null
 }
 
 # Searching

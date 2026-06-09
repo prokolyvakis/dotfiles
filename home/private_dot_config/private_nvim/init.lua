@@ -1,5 +1,5 @@
 -- AstroNvim bootstrap
--- Clones AstroNvim on first run, then loads it.
+-- Bootstraps lazy.nvim on first run; lazy.nvim then installs AstroNvim and plugins.
 -- Requires: nvim >= 0.9
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

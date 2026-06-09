@@ -8,8 +8,8 @@
 
 - name: Install Powerline fonts
   ansible.builtin.command: /tmp/powerline-fonts/install.sh
-  register: fonts_install
-  changed_when: fonts_install.rc == 0
+  args:
+    creates: "{{ home_path }}/.local/share/fonts/PowerlineSymbols.otf"
   notify: Refresh font cache
 
 - name: Clean up Powerline fonts repo

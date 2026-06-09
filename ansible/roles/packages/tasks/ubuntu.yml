@@ -24,10 +24,16 @@
     state: present
   become: true
 
+- name: Check if docker group exists
+  ansible.builtin.command: getent group docker
+  register: packages_docker_group
+  changed_when: false
+  failed_when: false
+
 - name: Add user to docker group
   ansible.builtin.user:
     name: "{{ username }}"
     groups: docker
     append: true
   become: true
-  failed_when: false
+  when: packages_docker_group.rc == 0
