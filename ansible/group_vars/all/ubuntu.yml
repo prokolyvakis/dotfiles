@@ -3,6 +3,7 @@ apt_packages:
   - build-essential
   - curl
   - fd-find
+  - fontconfig
   - fzf
   - git
   - git-extras
