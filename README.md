@@ -35,7 +35,7 @@ make docker-test # Run full setup in a clean Ubuntu container
 
 ## Editor
 
-Uses [AstroNvim](https://astronvim.com/) with AI completion via [copilot.lua](https://github.com/zbirenbaum/copilot.lua). On first launch, run `:Copilot auth` to authenticate.
+Uses [AstroNvim](https://astronvim.com/) with AI completion via [codecompanion.nvim](https://github.com/olimorris/codecompanion.nvim) using Claude (Anthropic). Set `ANTHROPIC_API_KEY` in your environment, then use `:CodeCompanionChat` in nvim.
 
 
 ## CI
