@@ -1,0 +1,33 @@
+---
+- name: Install oh-my-zsh
+  ansible.builtin.git:
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: "{{ home_path }}/.oh-my-zsh"
+    clone: true
+    update: true
+  notify: Set zsh as default shell
+
+- name: Install Spaceship zsh theme
+  ansible.builtin.git:
+    repo: https://github.com/denysdovhan/spaceship-prompt.git
+    dest: "{{ home_path }}/.oh-my-zsh/custom/themes/spaceship-prompt"
+    clone: true
+    update: true
+    force: true
+    depth: 1
+
+- name: Create Spaceship theme symlink
+  ansible.builtin.file:
+    src: "{{ home_path }}/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme"
+    dest: "{{ home_path }}/.oh-my-zsh/themes/spaceship.zsh-theme"
+    state: link
+    force: true
+
+- name: Install oh-my-zsh plugins
+  ansible.builtin.git:
+    repo: "{{ item.repo }}"
+    dest: "{{ home_path }}/.oh-my-zsh/custom/plugins/{{ item.name }}"
+    clone: true
+    update: true
+    force: true
+  loop: "{{ omz_plugins }}"

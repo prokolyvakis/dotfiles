@@ -1,0 +1,30 @@
+---
+# neovim package is installed by the packages role.
+# This role validates the version is sufficient for AstroNvim.
+
+- name: Check nvim version
+  ansible.builtin.command: nvim --version
+  register: nvim_version
+  changed_when: false
+  failed_when: false
+
+- name: Validate nvim is installed
+  ansible.builtin.assert:
+    that:
+      - nvim_version.rc == 0
+    fail_msg: >
+      Neovim is not installed. Ensure 'neovim' is in your package list.
+      On Ubuntu, you may need a PPA for a recent version:
+        sudo add-apt-repository ppa:neovim-ppa/stable
+
+- name: Parse nvim version number
+  ansible.builtin.set_fact:
+    nvim_major_minor: "{{ nvim_version.stdout_lines[0] | regex_search('v(\\d+\\.\\d+)', '\\1') | first }}"
+
+- name: Validate nvim >= 0.9
+  ansible.builtin.assert:
+    that:
+      - nvim_major_minor is version('0.9', '>=')
+    fail_msg: >
+      Neovim {{ nvim_major_minor }} is too old. AstroNvim requires >= 0.9.
+      On Ubuntu, use the PPA: sudo add-apt-repository ppa:neovim-ppa/stable

@@ -1,0 +1,22 @@
+---
+- name: Install Oh My Tmux
+  ansible.builtin.git:
+    repo: https://github.com/gpakosz/.tmux.git
+    dest: "{{ home_path }}/.tmux"
+    clone: true
+    update: true
+    force: true
+
+- name: Create tmux.conf symlink
+  ansible.builtin.file:
+    src: "{{ home_path }}/.tmux/.tmux.conf"
+    dest: "{{ home_path }}/.tmux.conf"
+    state: link
+    force: true
+
+- name: Create tmux.conf.local symlink
+  ansible.builtin.file:
+    src: "{{ home_path }}/.tmux/.tmux.conf.local"
+    dest: "{{ home_path }}/.tmux.conf.local"
+    state: link
+    force: true
