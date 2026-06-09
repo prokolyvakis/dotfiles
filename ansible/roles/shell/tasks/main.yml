@@ -32,5 +32,5 @@
     clone: true
     update: true
     force: true
-    version: master
+    version: "{{ item.version }}"
   loop: "{{ shell_omz_plugins }}"
