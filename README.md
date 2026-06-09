@@ -20,7 +20,7 @@ make apply
 
 - **`home/`** — chezmoi source directory. Manages dotfiles (zshrc, bashrc, gitconfig), modular shell configs (`~/.shell/*.sh`), and AstroNvim config.
 - **`ansible/`** — Ansible playbook with roles for packages, zsh, tmux, fonts, nvm, and neovim.
-- **`scripts/`** — One-time migration script from the old structure.
+- **`scripts/`** — Testing utilities (Docker smoke test).
 
 ## Usage
 
@@ -37,7 +37,6 @@ make docker-test # Run full setup in a clean Ubuntu container
 
 Uses [AstroNvim](https://astronvim.com/) with AI completion via [copilot.lua](https://github.com/zbirenbaum/copilot.lua). On first launch, run `:Copilot auth` to authenticate.
 
-> **Migration note:** Previously used SpaceVim. Run `make migrate` to clean up old SpaceVim files.
 
 ## CI
 

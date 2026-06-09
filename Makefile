@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: help install apply dotfiles system lint docker-test migrate
+.PHONY: help install apply dotfiles system lint docker-test
 
 help:  ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -24,6 +24,3 @@ lint:  ## Lint ansible + yaml
 
 docker-test:  ## Run full setup in a clean Ubuntu container
 	./scripts/docker-test.sh
-
-migrate:  ## One-time migration from old structure
-	./scripts/migrate.sh
