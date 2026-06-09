@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  connection: local
+
+  pre_tasks:
+    - name: Gather OS-specific variables
+      ansible.builtin.include_vars: "{{ item }}"
+      with_first_found:
+        - "group_vars/all/{{ 'macos' if ansible_os_family == 'Darwin' else 'ubuntu' }}.yml"
+
+  roles:
+    - preflight
+    - packages
+    - shell
+    - tmux
+    - fonts
+    - role: node
+      when: ansible_os_family != 'Darwin'
+    - neovim

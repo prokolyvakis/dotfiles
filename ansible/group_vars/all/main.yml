@@ -1,0 +1,3 @@
+---
+username: promania
+home_path: "{{ ansible_env.HOME }}"
