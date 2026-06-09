@@ -1,5 +1,5 @@
 ---
-omz_plugins:
+shell_omz_plugins:
   - name: oath
     repo: https://github.com/alexdesousa/oath.git
   - name: forgit

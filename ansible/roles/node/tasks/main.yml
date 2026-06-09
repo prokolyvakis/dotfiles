@@ -6,3 +6,4 @@
     dest: "{{ home_path }}/.nvm"
     clone: true
     update: true
+    version: master

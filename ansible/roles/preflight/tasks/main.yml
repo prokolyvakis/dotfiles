@@ -6,9 +6,9 @@
     fail_msg: "Unsupported OS family: {{ ansible_os_family }}. Only Darwin (macOS) and Debian (Ubuntu) are supported."
 
 - name: Check git is available
-  ansible.builtin.command: git --version
+  ansible.builtin.command: git --version  # noqa: command-instead-of-module
   changed_when: false
 
 - name: Check curl is available
-  ansible.builtin.command: curl --version
+  ansible.builtin.command: curl --version  # noqa: command-instead-of-module
   changed_when: false

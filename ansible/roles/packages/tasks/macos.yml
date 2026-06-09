@@ -21,8 +21,8 @@
 - name: Start Homebrew services
   ansible.builtin.command: brew services start {{ item }}
   loop: "{{ homebrew_services }}"
-  register: brew_service
-  changed_when: "'Successfully started' in brew_service.stdout"
+  register: packages_brew_service
+  changed_when: "'Successfully started' in packages_brew_service.stdout"
   failed_when: false
 
 - name: Install Homebrew casks
@@ -33,5 +33,5 @@
 - name: Install Mac App Store apps
   ansible.builtin.command: mas install {{ item }}
   loop: "{{ mases }}"
-  register: mas_result
-  changed_when: "'is already installed' not in mas_result.stdout"
+  register: packages_mas_result
+  changed_when: "'is already installed' not in packages_mas_result.stdout"

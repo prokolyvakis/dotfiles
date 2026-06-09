@@ -6,6 +6,7 @@
     clone: true
     update: true
     force: true
+    version: master
 
 - name: Create tmux.conf symlink
   ansible.builtin.file:
