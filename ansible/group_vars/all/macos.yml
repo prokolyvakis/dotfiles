@@ -3,22 +3,31 @@ homebrew_taps: []
 
 homebrew_packages:
   - bat
+  - commitizen
   - curl
   - dust
   - eza
   - fd
+  - ffmpeg
   - fselect
   - fzf
+  - gh
   - git
+  - git-filter-repo
   - git-lfs
   - glances
   - htop
   - httpie
+  - hugo
+  - imagemagick
   - jq
   - lazydocker
+  - lcov
+  - macvim
   - mas
   - ncdu
   - neovim
+  - nmap
   - nnn
   - node
   - nvm
@@ -33,13 +42,15 @@ homebrew_packages:
   - pyenv-virtualenv
   - ripgrep
   - sd
+  - shellcheck
+  - subversion
   - syncthing
-  - svn
   - thefuck
   - tldr
   - tmux
   - tree
   - universal-ctags
+  - uv
   - watch
   - wget
   - yt-dlp
