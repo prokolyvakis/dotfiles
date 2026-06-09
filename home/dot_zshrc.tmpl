@@ -1,0 +1,26 @@
+# Path to oh-my-zsh installation
+export ZSH="{{ .chezmoi.homeDir }}/.oh-my-zsh"
+
+# Theme
+ZSH_THEME="spaceship"
+
+# Auto-correction
+ENABLE_CORRECTION="true"
+
+# Plugins
+plugins=(
+  git
+  oath
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  forgit
+)
+
+autoload -U compinit && compinit
+
+source "$ZSH/oh-my-zsh.sh"
+
+# Source all shell modules
+for file in ~/.shell/*.sh; do
+  [ -r "$file" ] && source "$file"
+done

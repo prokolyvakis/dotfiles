@@ -1,0 +1,22 @@
+#!/bin/sh
+# Python toolchain (pyenv, thefuck, uv)
+
+# Initialize pyenv
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
+
+# Initialize thefuck
+if command -v thefuck 1>/dev/null 2>&1; then
+  eval "$(thefuck --alias)"
+fi
+
+{{ if eq .chezmoi.os "darwin" -}}
+# Initialize uvx shell completion (zsh only)
+if [ -n "$ZSH_VERSION" ] && command -v uvx 1>/dev/null 2>&1; then
+  if type compinit >/dev/null 2>&1; then
+    eval "$(uvx --generate-shell-completion zsh)"
+  fi
+fi
+{{ end -}}

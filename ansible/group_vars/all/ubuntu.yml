@@ -1,0 +1,22 @@
+---
+apt_packages:
+  - build-essential
+  - curl
+  - fd-find
+  - fzf
+  - git
+  - git-extras
+  - htop
+  - jq
+  - neovim
+  - ripgrep
+  - tmux
+  - tree
+  - wget
+  - zip
+  - zsh
+
+apt_packages_to_remove:
+  - docker.io
+
+update_all_packages: false

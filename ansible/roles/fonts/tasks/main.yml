@@ -1,0 +1,18 @@
+---
+- name: Clone Powerline fonts
+  ansible.builtin.git:
+    repo: https://github.com/powerline/fonts.git
+    dest: /tmp/powerline-fonts
+    depth: 1
+    version: master
+
+- name: Install Powerline fonts
+  ansible.builtin.command: /tmp/powerline-fonts/install.sh
+  register: fonts_install
+  changed_when: fonts_install.rc == 0
+  notify: Refresh font cache
+
+- name: Clean up Powerline fonts repo
+  ansible.builtin.file:
+    path: /tmp/powerline-fonts
+    state: absent

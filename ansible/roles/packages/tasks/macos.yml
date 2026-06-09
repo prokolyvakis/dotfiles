@@ -1,0 +1,37 @@
+---
+- name: Update Homebrew
+  community.general.homebrew:
+    update_homebrew: true
+
+- name: Install Homebrew taps
+  community.general.homebrew_tap:
+    name: "{{ item }}"
+  loop: "{{ homebrew_taps }}"
+
+- name: Install Homebrew formulae
+  community.general.homebrew:
+    name: "{{ homebrew_packages }}"
+    state: present
+
+- name: Install universal-ctags (HEAD)
+  community.general.homebrew:
+    name: universal-ctags/universal-ctags/universal-ctags
+    install_options: HEAD
+
+- name: Start Homebrew services
+  ansible.builtin.command: brew services start {{ item }}
+  loop: "{{ homebrew_services }}"
+  register: packages_brew_service
+  changed_when: "'Successfully started' in packages_brew_service.stdout"
+  failed_when: false
+
+- name: Install Homebrew casks
+  community.general.homebrew_cask:
+    name: "{{ homebrew_casks }}"
+    state: present
+
+- name: Install Mac App Store apps
+  ansible.builtin.command: mas install {{ item }}
+  loop: "{{ mases }}"
+  register: packages_mas_result
+  changed_when: "'is already installed' not in packages_mas_result.stdout"

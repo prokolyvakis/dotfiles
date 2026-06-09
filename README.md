@@ -1,37 +1,46 @@
-# An Ansible Playbook for my Dotfiles Configuration
+# dotfiles
 
-It automates the setup and configuration of the software I use for development on Ubuntu & Darwin distributions using [ansible](https://www.ansible.com/)! 
+Personal machine setup for macOS and Ubuntu. Uses [chezmoi](https://www.chezmoi.io/) for dotfiles and [Ansible](https://www.ansible.com/) for system provisioning.
 
-## What It Does
-- Installs packages.
-- Sets up my dotfiles.
-  - Super-custom git config
-  - Sets up [Oh My Zsh](https://ohmyz.sh/) with the [Spaceship ZSH](https://github.com/denysdovhan/spaceship-prompt) theme.
-  - Sets up my [zshrc](./files/link/zshrc) file.
-- Installs [SpaceVim](https://spacevim.org/)
-- Configures tmux with the [Oh My Tmux](https://github.com/gpakosz/.tmux) configuration.
-- Installs proper fonts.
+## Quick Start
 
-## Installation Process
-1. Install Ansible and git: `make bootstrap`
-2. Clone this repo and cd inside it: 
-   
-    ```
-    git clone https://github.com/prokolyvakis/dotfiles.git ~/.dotfiles && cd ~/.dotfiles
-    ```
+```bash
+# Clone
+git clone git@github.com:prokolyvakis/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
 
-3. Install the required Ansible roles: `ansible-galaxy install -r requirements.yml`
-4. Adapt accordingly the [config file](./group_vars/all/all.yml).
-5. Run it: `ansible-playbook -i inventory main.yml -b -K --skip-tags user`
+# Install prerequisites
+make install
 
-## Testing Process 
- `make docker-test`, it requires docker!
+# Full setup (packages + dotfiles)
+make apply
+```
 
-## Miscellaneous
-1. To update this repo, run: `make repo-update `
-2. Check the [Unofficial guide to dotfiles](https://dotfiles.github.io/) for more ideas!
-3. With regard to terminal:
-   1. On Darwin, the [Material Design theme](https://github.com/MartinSeeler/iterm2-material-design) on iTerm is pretty cool.
-   2. On GNU/Linux, check [Gogh](https://mayccoll.github.io/Gogh/)!
-   3. [Starship terminal](https://starship.rs/) is *maybe* worth exploring!
-4. Last but not least, the [Hack font](https://sourcefoundry.org/hack/) is pretty awesome!
+## Architecture
+
+- **`home/`** — chezmoi source directory. Manages dotfiles (zshrc, bashrc, gitconfig), modular shell configs (`~/.shell/*.sh`), and AstroNvim config.
+- **`ansible/`** — Ansible playbook with roles for packages, zsh, tmux, fonts, nvm, and neovim.
+- **`scripts/`** — One-time migration script from the old structure.
+
+## Usage
+
+```bash
+make help        # Show all targets
+make dotfiles    # Apply dotfiles only (chezmoi)
+make system      # Run system provisioning only (ansible)
+make apply       # Both
+make lint        # Lint ansible + yaml
+make docker-test # Run full setup in a clean Ubuntu container
+```
+
+## Editor
+
+Uses [AstroNvim](https://astronvim.com/) with AI completion via [copilot.lua](https://github.com/zbirenbaum/copilot.lua). On first launch, run `:Copilot auth` to authenticate.
+
+> **Migration note:** Previously used SpaceVim. Run `make migrate` to clean up old SpaceVim files.
+
+## CI
+
+GitHub Actions runs on every push/PR:
+- `yamllint` + `ansible-lint` + syntax-check (Ubuntu)
+- `chezmoi verify` (macOS + Ubuntu matrix)

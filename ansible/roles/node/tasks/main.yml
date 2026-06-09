@@ -1,0 +1,9 @@
+---
+# Linux only — on macOS, nvm is installed via Homebrew
+- name: Clone nvm
+  ansible.builtin.git:
+    repo: https://github.com/nvm-sh/nvm.git
+    dest: "{{ home_path }}/.nvm"
+    clone: true
+    update: true
+    version: master
