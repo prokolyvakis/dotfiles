@@ -8,6 +8,9 @@ ZSH_THEME="spaceship"
 ENABLE_CORRECTION="true"
 
 # Plugins
+# forgit aliases (ga, gd, gcb, ...) conflict with ~/.shell/git.sh; use `git forgit <cmd>` instead
+export FORGIT_NO_ALIASES=1
+
 plugins=(
   oath
   zsh-autosuggestions

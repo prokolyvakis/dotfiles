@@ -2,6 +2,9 @@
 # Git shell aliases — shell wrappers that invoke git commands.
 # Git-internal aliases (log formats, diff options) live in .gitconfig [alias].
 
+# Drop pre-existing aliases (e.g. forgit) that break the function definitions below
+unalias ga gc gf gfu gj gstat grbo ged gra gurl 2>/dev/null
+
 alias g='git'
 ga() { git add "${@:-.}"; }
 alias gp='git push'
