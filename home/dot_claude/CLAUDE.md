@@ -23,5 +23,5 @@ Project-specific skills live in each project's .claude/skills/ and are discovere
 When the user types `/graphify`, invoke the Skill tool with `skill: "graphify"` before doing anything else.
 
 # commit
-- **commit** (`~/.claude/skills/commit/SKILL.md`) - conventional commit message style guide. Trigger: any git commit operation.
-Always invoke the Skill tool with `skill: "commit"` before writing or executing any git commit message.
+- **samari:commit** (Samari plugin) - conventional commit message style guide. Trigger: any git commit operation.
+Always invoke the Skill tool with `skill: "samari:commit"` before writing or executing any git commit message.

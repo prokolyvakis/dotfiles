@@ -39,7 +39,7 @@ make docker-test # Run full setup in a clean Ubuntu container
 plugins, global skills (vercel-labs `skills` CLI), npm and pipx tools, and
 peon-ping. `make system` runs the `agents` role (macOS) which installs what is
 missing through the native managers; `make dotfiles` places `~/.claude`
-(CLAUDE.md, RTK.md, hooks, status line, personal skills) and merges the managed
+(CLAUDE.md, RTK.md, hooks, status line) and merges the managed
 keys into `~/.claude/settings.json` without touching keys written by Claude Code
 or peon-ping. Logins (claude.ai connectors, MCP OAuth, Codex) and the claude.ai
 "synced" plugins are not reproduced; sign in after the first run.
