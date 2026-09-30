@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+# chezmoi modify script: merge the managed subset into ~/.claude/settings.json.
+# Keys written by Claude Code, plugins or peon-ping-setup are preserved.
+import json
+import sys
+
+HOME = {{ .chezmoi.homeDir | quote }}
+MANAGED = json.loads({{ .agents.claude | toJson | quote }})
+
+raw = sys.stdin.read()
+try:
+    settings = json.loads(raw) if raw.strip() else {}
+except ValueError:
+    settings = {}
+
+for key, value in MANAGED["settings"].items():
+    settings[key] = value
+
+hooks = settings.setdefault("hooks", {})
+
+
+def ensure_hook(event, matcher, command):
+    entries = hooks.setdefault(event, [])
+    for entry in entries:
+        if any(h.get("command") == command for h in entry.get("hooks", [])):
+            return
+    entry = {"hooks": [{"type": "command", "command": command}]}
+    if matcher is not None:
+        entry = {"matcher": matcher, **entry}
+    entries.append(entry)
+
+
+ensure_hook("PreToolUse", "Bash", f"{HOME}/.claude/hooks/rtk-rewrite.sh")
+ensure_hook("Stop", None, f"{HOME}/.claude/hooks/stop-session-hygiene.sh")
+
+settings["statusLine"] = {"type": "command", "command": f"bash {HOME}/.claude/statusline-command.sh"}
+
+enabled = settings.setdefault("enabledPlugins", {})
+for plugin in MANAGED["plugins"]:
+    enabled.setdefault(plugin, True)
+
+known = settings.setdefault("extraKnownMarketplaces", {})
+for market in MANAGED["marketplaces"]:
+    if market["name"] == "claude-plugins-official":
+        continue
+    if "source_path" in market:
+        known[market["name"]] = {"source": {"source": "directory", "path": f"{HOME}/{market['source_path']}"}}
+    else:
+        known[market["name"]] = {"source": {"source": "github", "repo": market["source"]}}
+
+sys.stdout.write(json.dumps(settings, indent=2) + "\n")

@@ -3,7 +3,7 @@
 Hybrid setup: **chezmoi** for dotfiles, **Ansible** for system provisioning.
 
 - `home/` — chezmoi source directory. All dotfiles and `~/.shell/*.sh` modules.
-- `ansible/` — Ansible playbook with roles: preflight, packages, shell, tmux, fonts, node, neovim.
+- `ansible/` — Ansible playbook with roles: preflight, packages, shell, tmux, fonts, node, neovim, agents (macOS).
 - `scripts/` — Docker smoke test.
 
 ## Conventions
@@ -19,6 +19,7 @@ Hybrid setup: **chezmoi** for dotfiles, **Ansible** for system provisioning.
 - Pin `version:` on all `ansible.builtin.git` tasks. Some repos use `main`, not `master`.
 - No hardcoded paths like `/usr/bin/curl` — use bare command names for cross-platform.
 - macOS-only code must be in chezmoi-guarded templates.
+- Agent tooling (Claude/Codex plugins, skills, npm/pipx tools) is declared once in `home/.chezmoidata.yaml`; the `agents` role installs it and `home/dot_claude/modify_settings.json.tmpl` merges the managed keys into `~/.claude/settings.json`. Never manage that file whole: Claude Code and peon-ping write to it.
 
 ## Testing
 
@@ -30,4 +31,5 @@ Hybrid setup: **chezmoi** for dotfiles, **Ansible** for system provisioning.
 
 - Dotfile changes: edit in `home/`, run `chezmoi apply`.
 - Package changes: edit `ansible/group_vars/all/{macos,ubuntu}.yml`, run `make system`.
+- Agent plugin/skill changes: edit `home/.chezmoidata.yaml`, run `make system` then `make dotfiles`.
 - After any change: run `make lint` before committing.

@@ -1,0 +1,88 @@
+# Agent tooling profile shared by chezmoi (home/dot_claude) and Ansible (roles/agents).
+# Lists are the desired state on a fresh machine; nothing here carries credentials.
+agents:
+  claude:
+    marketplaces:
+      - name: claude-plugins-official
+        source: anthropics/claude-plugins-official
+      - name: openai-codex
+        source: openai/codex-plugin-cc
+      - name: samari
+        # Local development bundle; registered only when this path exists.
+        source_path: Documents/code/samari/dist/samari
+    # Installable with `claude plugin install`. claude.ai "synced" plugins
+    # (productivity, marketing, data, finance) follow the account, not this list.
+    plugins:
+      - aws-amplify@claude-plugins-official
+      - chrome-devtools-mcp@claude-plugins-official
+      - claude-code-setup@claude-plugins-official
+      - claude-md-management@claude-plugins-official
+      - code-review@claude-plugins-official
+      - code-simplifier@claude-plugins-official
+      - commit-commands@claude-plugins-official
+      - context7@claude-plugins-official
+      - databases-on-aws@claude-plugins-official
+      - deploy-on-aws@claude-plugins-official
+      - feature-dev@claude-plugins-official
+      - frontend-design@claude-plugins-official
+      - github@claude-plugins-official
+      - hookify@claude-plugins-official
+      - playwright@claude-plugins-official
+      - pr-review-toolkit@claude-plugins-official
+      - ralph-loop@claude-plugins-official
+      - remember@claude-plugins-official
+      - security-guidance@claude-plugins-official
+      - skill-creator@claude-plugins-official
+      - stripe@claude-plugins-official
+      - superpowers@claude-plugins-official
+      - typescript-lsp@claude-plugins-official
+      - codex@openai-codex
+      - samari@samari
+    # Merged into ~/.claude/settings.json by modify_settings.json; other keys are preserved.
+    settings:
+      model: "claude-fable-5-1[1m]"
+      effortLevel: xhigh
+      modelSettings:
+        claude-fable-5-1:
+          effortLevel: high
+      tui: fullscreen
+      skipDangerousModePermissionPrompt: true
+      skipWorkflowUsageWarning: true
+  codex:
+    marketplaces:
+      - name: samari
+        source_path: Documents/code/samari/dist/samari
+    plugins:
+      - samari@samari
+  # Global skills via the vercel-labs `skills` CLI into ~/.agents/skills,
+  # linked into ~/.claude/skills and ~/.codex/skills.
+  skills:
+    - source: mattpocock/skills
+      names:
+        - caveman
+        - diagnose
+        - grill-me
+        - grill-with-docs
+        - improve-codebase-architecture
+        - setup-matt-pocock-skills
+        - tdd
+        - to-issues
+        - to-prd
+        - triage
+        - write-a-skill
+        - zoom-out
+    - source: vercel-labs/skills
+      names:
+        - find-skills
+  npm:
+    - name: "@colbymchenry/codegraph"
+      version: "1.1.3"
+    - name: promptfoo
+      version: "0.121.17"
+    - name: "@gsd-build/sdk"
+      version: "0.1.0"
+  pipx:
+    - name: graphifyy
+      version: "0.7.9"
+  peon_ping:
+    enabled: true

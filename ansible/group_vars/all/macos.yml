@@ -1,5 +1,6 @@
 ---
-homebrew_taps: []
+homebrew_taps:
+  - peonping/tap
 
 homebrew_packages:
   - bat
@@ -35,12 +36,14 @@ homebrew_packages:
   - pandoc
   - pass
   - peco
+  - peon-ping
   - pipx
   - procs
   - progress
   - pyenv
   - pyenv-virtualenv
   - ripgrep
+  - rtk
   - sd
   - shellcheck
   - subversion
@@ -60,6 +63,10 @@ homebrew_packages:
 homebrew_casks:
   - appcleaner
   - bartender
+  - claude
+  - claude-code
+  - codex
+  - cursor
   - docker
   - font-hack-nerd-font
   - font-sauce-code-pro-nerd-font

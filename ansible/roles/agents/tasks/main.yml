@@ -1,0 +1,149 @@
+---
+# Reproduces the Claude Code / Codex tooling profile declared in home/.chezmoidata.yaml.
+# Native managers own installation; nothing here touches credentials or logins.
+- name: Load the agent tooling profile shared with chezmoi
+  ansible.builtin.include_vars:
+    file: "{{ playbook_dir }}/../home/.chezmoidata.yaml"
+
+- name: Check the native CLIs are available
+  ansible.builtin.command: "{{ item }} --version"
+  loop:
+    - claude
+    - codex
+    - npm
+    - pipx
+  changed_when: false
+
+- name: Install global npm packages
+  community.general.npm:
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"
+    global: true
+  loop: "{{ agents.npm }}"
+  loop_control:
+    label: "{{ item.name }}@{{ item.version }}"
+
+- name: Locate the pipx executable
+  ansible.builtin.command: which pipx
+  register: agents_pipx
+  changed_when: false
+
+- name: Install pipx applications
+  community.general.pipx:
+    name: "{{ item.name }}"
+    source: "{{ item.name }}=={{ item.version }}"
+    state: present
+    executable: "{{ agents_pipx.stdout }}"
+  loop: "{{ agents.pipx }}"
+  loop_control:
+    label: "{{ item.name }}=={{ item.version }}"
+
+- name: Read registered Claude marketplaces
+  ansible.builtin.command: claude plugin marketplace list --json
+  register: agents_claude_marketplaces
+  changed_when: false
+
+- name: Resolve marketplace directory sources
+  ansible.builtin.stat:
+    path: "{{ home_path }}/{{ item.source_path }}"
+  loop: "{{ agents.claude.marketplaces | selectattr('source_path', 'defined') | list }}"
+  loop_control:
+    label: "{{ item.name }}"
+  register: agents_claude_market_dirs
+
+- name: Register Claude marketplaces
+  ansible.builtin.command: >-
+    claude plugin marketplace add
+    {{ (home_path ~ '/' ~ item.source_path) if item.source_path is defined else item.source }}
+  loop: "{{ agents.claude.marketplaces }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - item.name not in (agents_claude_marketplaces.stdout | from_json | map(attribute='name') | list)
+    - item.source_path is not defined or
+      (agents_claude_market_dirs.results | selectattr('item.name', 'equalto', item.name)
+       | map(attribute='stat.exists') | first)
+  register: agents_claude_market_add
+  changed_when: agents_claude_market_add.rc == 0
+
+- name: Read installed Claude plugins
+  ansible.builtin.command: claude plugin list --json
+  register: agents_claude_plugins
+  changed_when: false
+
+- name: Install Claude plugins
+  ansible.builtin.command: claude plugin install {{ item }} --scope user --yes --json
+  loop: "{{ agents.claude.plugins }}"
+  when:
+    - item not in (agents_claude_plugins.stdout | from_json | map(attribute='id') | list)
+    - item.split('@')[1] != 'samari' or
+      (agents_claude_market_dirs.results | selectattr('item.name', 'equalto', 'samari')
+       | map(attribute='stat.exists') | first)
+  register: agents_claude_plugin_add
+  changed_when: agents_claude_plugin_add.rc == 0
+
+- name: Read registered Codex marketplaces
+  ansible.builtin.command: codex plugin marketplace list --json
+  register: agents_codex_marketplaces
+  changed_when: false
+
+- name: Register Codex marketplaces
+  ansible.builtin.command: codex plugin marketplace add {{ home_path }}/{{ item.source_path }} --json
+  loop: "{{ agents.codex.marketplaces }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - item.name not in ((agents_codex_marketplaces.stdout | from_json).marketplaces | map(attribute='name') | list)
+    - (agents_claude_market_dirs.results | selectattr('item.name', 'equalto', item.name)
+       | map(attribute='stat.exists') | first)
+  register: agents_codex_market_add
+  changed_when: agents_codex_market_add.rc == 0
+
+- name: Read installed Codex plugins
+  ansible.builtin.command: codex plugin list --marketplace {{ item.split('@')[1] }} --json
+  loop: "{{ agents.codex.plugins }}"
+  register: agents_codex_plugins
+  changed_when: false
+  failed_when: agents_codex_plugins.rc != 0 and 'not found' not in agents_codex_plugins.stderr
+
+- name: Install Codex plugins
+  ansible.builtin.command: codex plugin add {{ item.item }} --json
+  loop: "{{ agents_codex_plugins.results }}"
+  loop_control:
+    label: "{{ item.item }}"
+  when:
+    - item.rc == 0
+    - item.item.split('@')[0] not in ((item.stdout | from_json).installed | map(attribute='name') | list)
+  register: agents_codex_plugin_add
+  changed_when: agents_codex_plugin_add.rc == 0
+
+- name: Read installed global agent skills
+  ansible.builtin.find:
+    paths: "{{ home_path }}/.agents/skills"
+    file_type: directory
+  register: agents_installed_skills
+
+- name: Install missing global agent skills
+  ansible.builtin.command: >-
+    npx -y skills add {{ item.source }} --global --yes
+    --agent claude-code codex --skill {{ agents_missing | join(' ') }}
+  loop: "{{ agents.skills }}"
+  loop_control:
+    label: "{{ item.source }}"
+  vars:
+    agents_present: "{{ agents_installed_skills.files | map(attribute='path') | map('basename') | list }}"
+    agents_missing: "{{ item.names | difference(agents_present) }}"
+  when: agents_missing | length > 0
+  register: agents_skills_add
+  changed_when: agents_skills_add.rc == 0
+
+- name: Install the graphify skill for Claude Code
+  ansible.builtin.command: graphify install --platform claude
+  args:
+    creates: "{{ home_path }}/.claude/skills/graphify/SKILL.md"
+
+- name: Set up peon-ping hooks, skills and sound packs
+  ansible.builtin.command: peon-ping-setup
+  args:
+    creates: "{{ home_path }}/.claude/hooks/peon-ping/peon.sh"
+  when: agents.peon_ping.enabled
