@@ -35,3 +35,5 @@ jobs:
         run: sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/bin" && echo "$HOME/bin" >> "$GITHUB_PATH"
       - name: Verify templates
         run: chezmoi init --source=home/ --dry-run --verbose
+      - name: Settings merger in a synthetic home
+        run: python3 scripts/test-settings-merge.py -v

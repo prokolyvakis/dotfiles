@@ -24,8 +24,9 @@ Hybrid setup: **chezmoi** for dotfiles, **Ansible** for system provisioning.
 ## Testing
 
 - `make lint` — yamllint + ansible-lint (must pass at production profile).
+- `make test` — runs the rendered `modify_settings.json` merger in a synthetic home: invalid input leaves the file untouched, only owned keys change, explicit disables and unknown entries survive, repeated apply is byte-stable.
 - `make docker-test` — full Ubuntu 24.04 smoke test (packages + chezmoi + idempotence).
-- CI runs on push/PR: lint on Ubuntu, chezmoi template verify on both macOS and Ubuntu.
+- CI runs on push/PR: lint on Ubuntu, chezmoi template verify and the merger test on both macOS and Ubuntu.
 
 ## Workflow
 

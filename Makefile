@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: help install apply dotfiles system lint docker-test
+.PHONY: help install apply dotfiles system lint test docker-test
 
 help:  ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -21,6 +21,9 @@ system:  ## Run system provisioning only (ansible)
 lint:  ## Lint ansible + yaml
 	yamllint -c .yamllint.yml ansible/
 	cd ansible && ansible-lint playbook.yml
+
+test:  ## Exercise the settings.json merger in a synthetic home (needs chezmoi, python3)
+	python3 scripts/test-settings-merge.py -v
 
 docker-test:  ## Run full setup in a clean Ubuntu container
 	./scripts/docker-test.sh

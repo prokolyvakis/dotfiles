@@ -1,34 +1,93 @@
 #!/usr/bin/env python3
 # chezmoi modify script: merge the managed subset into ~/.claude/settings.json.
-# Keys written by Claude Code, plugins or peon-ping-setup are preserved.
+#
+# Owned values: the keys under agents.claude.settings, statusLine, the managed
+# entries of enabledPlugins (added when absent; an existing true/false is kept)
+# and the managed entries of extraKnownMarketplaces. Everything else, including
+# keys written by Claude Code, plugins or peon-ping-setup, unknown plugins and
+# marketplaces, is preserved byte-for-byte in content.
+#
+# Fail-safe: empty input initialises a new file; any other unparsable or
+# wrongly typed input exits non-zero WITHOUT writing output, so chezmoi leaves
+# the existing file untouched. A directory marketplace whose path is missing is
+# reported as unavailable and not registered (same rule as the Ansible role).
 import json
+import os
 import sys
 
 HOME = {{ .chezmoi.homeDir | quote }}
 MANAGED = json.loads({{ .agents.claude | toJson | quote }})
 
+
+def fail(message):
+    sys.stderr.write(f"modify_settings.json: {message}; leaving settings.json unchanged\n")
+    sys.exit(1)
+
+
+def require_object(value, name):
+    if value is None:
+        return {}
+    if not isinstance(value, dict):
+        fail(f"{name} must be a JSON object, found {type(value).__name__}")
+    return value
+
+
 raw = sys.stdin.read()
-try:
-    settings = json.loads(raw) if raw.strip() else {}
-except ValueError:
+if raw.strip():
+    try:
+        settings = json.loads(raw)
+    except ValueError as error:
+        fail(f"existing settings are not valid JSON ({error})")
+    if not isinstance(settings, dict):
+        fail(f"existing settings must be a JSON object, found {type(settings).__name__}")
+else:
     settings = {}
 
-for key, value in MANAGED["settings"].items():
-    settings[key] = value
+before = {}
+after = {}
 
-settings["statusLine"] = {"type": "command", "command": f"bash {HOME}/.claude/statusline-command.sh"}
 
-enabled = settings.setdefault("enabledPlugins", {})
-for plugin in MANAGED["plugins"]:
-    enabled.setdefault(plugin, True)
+def set_owned(container, key, value, label):
+    old = container.get(key, None)
+    if old != value:
+        before[label] = old
+        after[label] = value
+    container[key] = value
 
-known = settings.setdefault("extraKnownMarketplaces", {})
-for market in MANAGED["marketplaces"]:
-    if market["name"] == "claude-plugins-official":
+
+for key, value in require_object(MANAGED.get("settings"), "agents.claude.settings").items():
+    set_owned(settings, key, value, key)
+
+set_owned(settings, "statusLine",
+          {"type": "command", "command": f"bash {HOME}/.claude/statusline-command.sh"},
+          "statusLine")
+
+enabled = require_object(settings.get("enabledPlugins"), "enabledPlugins")
+settings["enabledPlugins"] = enabled
+for plugin in MANAGED.get("plugins", []):
+    if plugin not in enabled:
+        set_owned(enabled, plugin, True, f"enabledPlugins.{plugin}")
+    # An explicit true/false already present is the user's or a manager's decision.
+
+known = require_object(settings.get("extraKnownMarketplaces"), "extraKnownMarketplaces")
+settings["extraKnownMarketplaces"] = known
+for market in MANAGED.get("marketplaces", []):
+    name = market["name"]
+    if name == "claude-plugins-official":
         continue
     if "source_path" in market:
-        known[market["name"]] = {"source": {"source": "directory", "path": f"{HOME}/{market['source_path']}"}}
+        path = os.path.join(HOME, market["source_path"])
+        if not os.path.isdir(path):
+            state = "kept as registered" if name in known else "not registered"
+            sys.stderr.write(f"modify_settings.json: marketplace {name}: {path} is missing; {state}\n")
+            continue
+        entry = {"source": {"source": "directory", "path": path}}
     else:
-        known[market["name"]] = {"source": {"source": "github", "repo": market["source"]}}
+        entry = {"source": {"source": "github", "repo": market["source"]}}
+    set_owned(known, name, entry, f"extraKnownMarketplaces.{name}")
+
+if before:
+    sys.stderr.write("modify_settings.json: owned values changed "
+                     + json.dumps({"before": before, "after": after}, sort_keys=True) + "\n")
 
 sys.stdout.write(json.dumps(settings, indent=2) + "\n")

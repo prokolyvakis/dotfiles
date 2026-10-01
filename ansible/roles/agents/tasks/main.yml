@@ -51,6 +51,16 @@
     label: "{{ item.name }}"
   register: agents_claude_market_dirs
 
+- name: Report local marketplace sources that are unavailable
+  ansible.builtin.debug:
+    msg: >-
+      Marketplace {{ item.item.name }} is declared from {{ home_path }}/{{ item.item.source_path }}
+      but that directory is missing; it and its plugins stay unregistered until the bundle is built.
+  loop: "{{ agents_claude_market_dirs.results }}"
+  loop_control:
+    label: "{{ item.item.name }}"
+  when: not item.stat.exists
+
 - name: Register Claude marketplaces
   ansible.builtin.command: >-
     claude plugin marketplace add
@@ -71,6 +81,9 @@
   register: agents_claude_plugins
   changed_when: false
 
+# Installation only: a plugin already listed by the manager, enabled or not, is
+# left alone. Enablement preferences stay with the user; the settings merger
+# never flips an explicit false back to true.
 - name: Install Claude plugins
   ansible.builtin.command: claude plugin install {{ item }} --scope user --yes --json
   loop: "{{ agents.claude.plugins }}"

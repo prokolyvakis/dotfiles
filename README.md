@@ -30,6 +30,7 @@ make dotfiles    # Apply dotfiles only (chezmoi)
 make system      # Run system provisioning only (ansible)
 make apply       # Both
 make lint        # Lint ansible + yaml
+make test        # Settings merger in a synthetic home
 make docker-test # Run full setup in a clean Ubuntu container
 ```
 
@@ -38,10 +39,17 @@ make docker-test # Run full setup in a clean Ubuntu container
 `home/.chezmoidata.yaml` declares the Claude Code / Codex profile: marketplaces,
 plugins, npm and pipx tools, and peon-ping. `make system` runs the `agents` role (macOS) which installs what is
 missing through the native managers; `make dotfiles` places `~/.claude`
-(CLAUDE.md, status line) and merges the managed
+(CLAUDE.md, coordination.md, status line) and merges the managed
 keys into `~/.claude/settings.json` without touching keys written by Claude Code
-or peon-ping. Logins (claude.ai connectors, MCP OAuth, Codex) and the claude.ai
+or peon-ping. The merger refuses unparsable or wrongly typed input instead of
+replacing it, keeps an explicit plugin disable, skips a local marketplace whose
+directory is missing, and prints a before/after record of the owned values it
+changed. Logins (claude.ai connectors, MCP OAuth, Codex) and the claude.ai
 "synced" plugins are not reproduced; sign in after the first run.
+
+`~/.claude/CLAUDE.md` makes Samari the default owner of substantive work and
+`~/.claude/coordination.md` records how the installed marketplace plugins
+compose under it (loaded on demand, not on every task).
 
 ```bash
 cd ansible && ansible-playbook playbook.yml --tags agents --diff   # agents role only
