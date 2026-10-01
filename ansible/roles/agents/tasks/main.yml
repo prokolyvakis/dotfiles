@@ -117,26 +117,6 @@
   register: agents_codex_plugin_add
   changed_when: agents_codex_plugin_add.rc == 0
 
-- name: Read installed global agent skills
-  ansible.builtin.find:
-    paths: "{{ home_path }}/.agents/skills"
-    file_type: directory
-  register: agents_installed_skills
-
-- name: Install missing global agent skills
-  ansible.builtin.command: >-
-    npx -y skills add {{ item.source }} --global --yes
-    --agent claude-code codex --skill {{ agents_missing | join(' ') }}
-  loop: "{{ agents.skills }}"
-  loop_control:
-    label: "{{ item.source }}"
-  vars:
-    agents_present: "{{ agents_installed_skills.files | map(attribute='path') | map('basename') | list }}"
-    agents_missing: "{{ item.names | difference(agents_present) }}"
-  when: agents_missing | length > 0
-  register: agents_skills_add
-  changed_when: agents_skills_add.rc == 0
-
 - name: Install the graphify skill for Claude Code
   ansible.builtin.command: graphify install --platform claude
   args:

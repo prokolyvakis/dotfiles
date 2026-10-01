@@ -54,26 +54,6 @@ agents:
         source_path: Documents/code/samari/dist/samari
     plugins:
       - samari@samari
-  # Global skills via the vercel-labs `skills` CLI into ~/.agents/skills,
-  # linked into ~/.claude/skills and ~/.codex/skills.
-  skills:
-    - source: mattpocock/skills
-      names:
-        - caveman
-        - diagnose
-        - grill-me
-        - grill-with-docs
-        - improve-codebase-architecture
-        - setup-matt-pocock-skills
-        - tdd
-        - to-issues
-        - to-prd
-        - triage
-        - write-a-skill
-        - zoom-out
-    - source: vercel-labs/skills
-      names:
-        - find-skills
   npm:
     - name: "@colbymchenry/codegraph"
       version: "1.1.3"

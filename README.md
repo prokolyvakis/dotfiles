@@ -36,10 +36,9 @@ make docker-test # Run full setup in a clean Ubuntu container
 ## AI agents
 
 `home/.chezmoidata.yaml` declares the Claude Code / Codex profile: marketplaces,
-plugins, global skills (vercel-labs `skills` CLI), npm and pipx tools, and
-peon-ping. `make system` runs the `agents` role (macOS) which installs what is
+plugins, npm and pipx tools, and peon-ping. `make system` runs the `agents` role (macOS) which installs what is
 missing through the native managers; `make dotfiles` places `~/.claude`
-(CLAUDE.md, RTK.md, the rtk hook, status line) and merges the managed
+(CLAUDE.md, status line) and merges the managed
 keys into `~/.claude/settings.json` without touching keys written by Claude Code
 or peon-ping. Logins (claude.ai connectors, MCP OAuth, Codex) and the claude.ai
 "synced" plugins are not reproduced; sign in after the first run.
