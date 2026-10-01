@@ -31,7 +31,6 @@ def ensure_hook(event, matcher, command):
 
 
 ensure_hook("PreToolUse", "Bash", f"{HOME}/.claude/hooks/rtk-rewrite.sh")
-ensure_hook("Stop", None, f"{HOME}/.claude/hooks/stop-session-hygiene.sh")
 
 settings["statusLine"] = {"type": "command", "command": f"bash {HOME}/.claude/statusline-command.sh"}
 
