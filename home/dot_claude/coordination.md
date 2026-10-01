@@ -24,6 +24,32 @@ than assuming from this list. Samari's generic procedure is in its
 | Maintenance | `claude-code-setup`, `claude-md-management`, `hookify`, `skill-creator`, `superpowers:diagnosing-superpowers` inside an explicitly bounded maintenance task | Self-reconfigure to make the current task easier |
 | Iteration loop | `/ralph-loop` only as an explicit finite experiment the user requested | Nest it around another controller or an irreversible effect |
 
+Child-capability notes from the source matrix (1 October 2026):
+
+- Superpowers: `systematic-debugging`, `test-driven-development`,
+  `verification-before-completion` and `receiving-code-review` are methods
+  usable inside a Samari task. `brainstorming` and `writing-plans` own a
+  design or plan assignment only when one is needed. `executing-plans`,
+  `subagent-driven-development`, `dispatching-parallel-agents` and
+  `finishing-a-development-branch` change coordination or delivery and need
+  an explicit workflow transfer. `writing-skills` and
+  `diagnosing-superpowers` are maintenance; the latter reads session history.
+- Stripe: `stripe-docs`, `stripe-best-practices`, `connect-recommend`,
+  `connect-required-verification-information` and `upgrade-stripe` (explicit
+  migration only) were inspected. `stripe-apps`, `metronome`,
+  `stripe-directory`, `stripe-projects` and `stripe-pay` are catalog names
+  only; inspect their bodies before a first use and never infer they are
+  read-only.
+- commit-commands: `commit-push-pr` combines three effects; `clean_gone`
+  deletes branches and worktrees and needs ownership, cleanliness and
+  unmerged-work checks beyond "upstream is gone".
+- Feature Dev: `code-reviewer` is an alternative baseline reviewer; one
+  `code-explorer` for flow tracing, one `code-architect` for a material
+  design choice.
+- AWS: Amplify keeps core-mobile versus core-web selection and existing
+  backend contracts; a deploy-on-aws diagram or estimate does not authorize
+  provisioning.
+
 ## Codex (official plugin)
 
 - Internal assignment: the `codex:codex-rescue` **agent** through the Agent
