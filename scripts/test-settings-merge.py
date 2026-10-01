@@ -156,5 +156,44 @@ class SettingsMergeTests(unittest.TestCase):
                          str(Path.home()) == str(self.home), "no state outside the synthetic home")
 
 
+    # CFG-05 / rollback: re-applying an earlier profile touches only the owned
+    # values it changed and keeps a user edit made in between; nothing else is
+    # deleted.
+    def test_profile_rollback_preserves_concurrent_unowned_edit(self):
+        existing = {
+            "hooks": {"Stop": [{"hooks": [{"type": "command", "command": "peon.sh"}]}]},
+            "permissions": {"allow": ["Bash(ls)"]},
+            "enabledPlugins": {"user-plugin@elsewhere": True},
+        }
+        current = json.loads(self.merge(json.dumps(existing)).stdout)
+        current["permissions"]["allow"].append("Bash(pwd)")          # concurrent unowned edit
+        current["enabledPlugins"]["user-plugin@elsewhere"] = False    # concurrent user decision
+        previous_source = Path(self.temporary.name) / "previous source"
+        shutil.copytree(SOURCE, previous_source)
+        data = previous_source / ".chezmoidata.yaml"
+        text = data.read_text(encoding="utf-8")
+        self.assertIn(f'model: "{self.data["settings"]["model"]}"', text)
+        data.write_text(text.replace(f'model: "{self.data["settings"]["model"]}"', 'model: "previous-model"'),
+                        encoding="utf-8")
+        rendered = subprocess.run(
+            ["chezmoi", "execute-template", f"--source={previous_source}"],
+            input=TEMPLATE.read_text(encoding="utf-8"), cwd=REPO, env=self.env,
+            text=True, capture_output=True, check=True)
+        script = self.home / "previous_modify.py"
+        script.write_text(rendered.stdout, encoding="utf-8")
+        result = subprocess.run([sys.executable, str(script)], input=json.dumps(current), text=True,
+                                capture_output=True, timeout=15)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        rolled = json.loads(result.stdout)
+        self.assertEqual(rolled["model"], "previous-model")
+        self.assertEqual(rolled["permissions"]["allow"], ["Bash(ls)", "Bash(pwd)"])
+        self.assertEqual(rolled["hooks"], existing["hooks"])
+        self.assertIs(rolled["enabledPlugins"]["user-plugin@elsewhere"], False)
+        for plugin in self.data["plugins"]:
+            self.assertIn(plugin, rolled["enabledPlugins"])
+        record = json.loads(result.stderr.split("owned values changed ", 1)[1])
+        self.assertEqual(set(record["before"]), {"model"}, "only the owned value that changed is recorded")
+
+
 if __name__ == "__main__":
     unittest.main()
