@@ -40,11 +40,13 @@ agents:
       - samari@samari
     # Merged into ~/.claude/settings.json by modify_settings.json; other keys are preserved.
     settings:
-      model: "claude-fable-5-1[1m]"
+      model: "opus"
       effortLevel: xhigh
       modelSettings:
         claude-fable-5-1:
           effortLevel: high
+        claude-opus-5-5:
+          effortLevel: xhigh
       tui: fullscreen
       skipDangerousModePermissionPrompt: true
       skipWorkflowUsageWarning: true
