@@ -24,6 +24,7 @@ lint:  ## Lint ansible + yaml
 
 test:  ## Exercise the settings.json merger in a synthetic home (needs chezmoi, python3)
 	python3 scripts/test-settings-merge.py -v
+	python3 scripts/test-coordination-map.py -v
 
 docker-test:  ## Run full setup in a clean Ubuntu container
 	./scripts/docker-test.sh
