@@ -67,6 +67,40 @@ Child-capability notes from the source matrix (1 October 2026):
 - Model and effort stay at plugin defaults unless the user selects them. Claude
   plugins, MCP permissions and this file do not transfer to Codex.
 
+## Managed mode (Omnigent; accepted in Samari ADR 0007, not yet qualified)
+
+Applies only when Omnigent dispatches the workers; standalone sessions follow
+the sections above. Every declared plugin has one row. A row is a rule for
+this profile, not evidence that the plugin is installed, ready or qualified.
+
+| Plugin | Managed-mode rule |
+| --- | --- |
+| `samari@samari` | One task owner; a dispatched worker follows Samari's worker mode and never starts the owner workflow again |
+| `superpowers` | Its methods stay usable inside an assignment; its full workflow only by explicit transfer, never as a nested supervisor |
+| `feature-dev` | Individual explorer, architect or reviewer agents for one bounded question; the full command only when the user selects it |
+| `frontend-design` | Visual work only; existing brand, platform and accessibility requirements win |
+| `code-simplifier` | A writer, not a reviewer; one simplifier before final checks, which then rerun |
+| `pr-review-toolkit` | One baseline reviewer, then a specialist only for an identified gap; one simplifier |
+| `code-review` | Outside internal review; only inside an authorized PR workflow because it posts |
+| `commit-commands` | One commit executor; push, PR and cleanup are separate authorized effects |
+| `codex@openai-codex` | Standalone mode only; managed Codex work goes through Omnigent's Codex worker, never a second hop through this plugin |
+| `ralph-loop` | Off in managed execution; an explicit, bounded, isolated experiment only |
+| `aws-amplify` | Affected Gen2 reference only; the project's auth, SDK pins and deployment route win |
+| `databases-on-aws` | Aurora DSQL work only; never routed to other databases by package name |
+| `deploy-on-aws` | Design, pricing and diagrams separate from provisioning, which needs its own grant |
+| `stripe` | The exact child skill; existing API version and environment win; no live financial operation |
+| `context7` | Minimal queries with approved data egress; verify consequential API facts at the source |
+| `github` | Scoped repository and operation; read-only for review; no duplicate owner beside the native CLI |
+| `typescript-lsp` | TypeScript and JavaScript navigation only; not an acceptance oracle |
+| `playwright` | One browser owner per target, isolated test identities, the approved test proxy when required |
+| `chrome-devtools-mcp` | Investigation under the same browser owner; never a second concurrent controller |
+| `claude-code-setup` | Maintenance scope only; recommendations install nothing |
+| `claude-md-management` | Maintenance branch with evaluation; one canonical instruction source |
+| `hookify` | Inventory existing handlers; rule edits only in explicit maintenance work |
+| `remember` | Off in the security profile until capture, egress and retention are approved; episodic hints only |
+| `security-guidance` | Required controls kept; bootstrap and callbacks tested separately; findings belong to the candidate they reviewed |
+| `skill-creator` | Sandboxed maintenance with held-out evaluation and approved promotion |
+
 ## Ambient hooks (observed 2026-10-01; recheck after plugin updates)
 
 | Owner | Events | Effect class | Rule |

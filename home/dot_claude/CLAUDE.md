@@ -27,6 +27,10 @@ These rules apply in every session, every project.
   duplicate sequence around it. A matching catalog name is not such a request.
 - Trivial, well-specified changes stay direct: no delegation, no planning
   documents, no specialist, no review ceremony.
+- A bounded assignment from a parent owner (a subagent brief, a Codex job or a
+  managed dispatch) is worker mode: do the assigned purpose, return its
+  identity, observed results, limits and next action, and do not start
+  Samari's owner workflow or delegate further unless the assignment says so.
 - Delegation changes nothing else: do not install tools, change permissions,
   enable callbacks or export data as a side effect of handing work to a
   specialist or to Codex, and do not ask for a new approval merely because a
