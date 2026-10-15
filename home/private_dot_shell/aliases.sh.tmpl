@@ -66,8 +66,15 @@ ffe() { find . -name '*'"$@"; }
 findPid() { lsof -t -c "$@"; }
 alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
 
-# Tmux — deactivate conda before launching to avoid env pollution
-alias tmux='command -v conda > /dev/null && conda deactivate; tmux'
+# Tmux — leave any active conda environment first so new panes start clean.
+tmux() {
+    while [ -n "${CONDA_DEFAULT_ENV:-}" ] && command -v conda > /dev/null 2>&1; do
+        local _conda_before="$CONDA_DEFAULT_ENV"
+        conda deactivate
+        [ "${CONDA_DEFAULT_ENV:-}" != "$_conda_before" ] || break
+    done
+    command tmux "$@"
+}
 
 # Full recursive directory listing
 alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\'' -e '\''s/^/   /'\'' -e '\''s/-/|/'\'' | less'
