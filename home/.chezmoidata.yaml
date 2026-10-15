@@ -76,3 +76,17 @@ agents:
       os: Debian
   peon_ping:
     enabled: true
+
+# Defensive security scanners, installed by the `security` role (macOS now;
+# Ubuntu is wired during the full-setup test). Mainstream tools, no credentials;
+# each scanner's exact version is recorded when it runs, not pinned here.
+security:
+  scanners:
+    - name: semgrep       # static analysis (SAST)
+      brew: semgrep
+    - name: osv-scanner   # dependency and lockfile known-vulnerability checks
+      brew: osv-scanner
+    - name: gitleaks      # secret scanning in code and history
+      brew: gitleaks
+    - name: trivy         # container, IaC and configuration checks
+      brew: trivy

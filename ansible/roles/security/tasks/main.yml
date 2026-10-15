@@ -1,0 +1,12 @@
+---
+# Installs the defensive security scanners declared in home/.chezmoidata.yaml.
+# Mainstream tools (static analysis, dependency, secret and config scanning);
+# nothing here touches credentials. macOS only for now, like the agents role.
+- name: Load the security scanner profile shared with chezmoi
+  ansible.builtin.include_vars:
+    file: "{{ playbook_dir }}/../home/.chezmoidata.yaml"
+
+- name: Install security scanners with Homebrew
+  community.general.homebrew:
+    name: "{{ security.scanners | map(attribute='brew') | list }}"
+    state: present

@@ -21,3 +21,6 @@
     - role: agents
       when: ansible_os_family == 'Darwin'
       tags: agents
+    - role: security
+      when: ansible_os_family == 'Darwin'
+      tags: security

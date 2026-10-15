@@ -60,6 +60,19 @@ one row in that map.
 cd ansible && ansible-playbook playbook.yml --tags agents --diff   # agents role only
 ```
 
+## Security scanners
+
+`home/.chezmoidata.yaml` also declares a `security` set of defensive scanners —
+Semgrep (static analysis), OSV-Scanner (dependencies), Gitleaks (secrets) and
+Trivy (containers and config). The `security` role installs them with Homebrew
+on macOS; they are mainstream tools and carry no credentials. Each tool's exact
+version is recorded when it runs, not pinned here. Ubuntu installation is wired
+during the full container test.
+
+```bash
+cd ansible && ansible-playbook playbook.yml --tags security --diff  # scanners only
+```
+
 ## Editor
 
 Uses [AstroNvim](https://astronvim.com/) with AI completion via [codecompanion.nvim](https://github.com/olimorris/codecompanion.nvim) using Claude (Anthropic). Set `ANTHROPIC_API_KEY` in your environment, then use `:CodeCompanionChat` in nvim.

@@ -3,7 +3,7 @@
 Hybrid setup: **chezmoi** for dotfiles, **Ansible** for system provisioning.
 
 - `home/` — chezmoi source directory. All dotfiles and `~/.shell/*.sh` modules.
-- `ansible/` — Ansible playbook with roles: preflight, packages, shell, tmux, fonts, node, neovim, agents (macOS).
+- `ansible/` — Ansible playbook with roles: preflight, packages, shell, tmux, fonts, node, neovim, agents (macOS), security (macOS).
 - `scripts/` — Docker smoke test, settings-merger test, coordination-map test.
 
 ## Conventions
@@ -20,6 +20,7 @@ Hybrid setup: **chezmoi** for dotfiles, **Ansible** for system provisioning.
 - No hardcoded paths like `/usr/bin/curl` — use bare command names for cross-platform.
 - macOS-only code must be in chezmoi-guarded templates.
 - Agent tooling (Claude/Codex plugins, npm/pipx tools) is declared once in `home/.chezmoidata.yaml`; the `agents` role installs it and `home/dot_claude/modify_settings.json.tmpl` merges the managed keys into `~/.claude/settings.json`. Never manage that file whole: Claude Code and peon-ping write to it.
+- Defensive security scanners are declared under `security:` in `home/.chezmoidata.yaml` and installed by the `security` role (Homebrew, macOS); add a scanner there, not in a role task.
 
 ## Testing
 
