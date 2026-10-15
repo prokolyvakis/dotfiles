@@ -61,8 +61,18 @@ agents:
       version: "1.1.3"
     - name: promptfoo
       version: "0.121.17"
+    # Omnigent needs pnpm with Node 22+, uv, git, tmux and, on Linux, bubblewrap.
+    - name: pnpm
+      version: "12.11.2"
+  # An optional `os` (ansible_os_family) limits an entry to one platform.
   pipx:
     - name: graphifyy
       version: "0.7.9"
+    - name: omnigent
+      version: "0.18.0"
+    # macOS gets uv from Homebrew.
+    - name: uv
+      version: "0.13.1"
+      os: Debian
   peon_ping:
     enabled: true

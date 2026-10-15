@@ -1,5 +1,6 @@
 ---
 apt_packages:
+  - bubblewrap
   - build-essential
   - curl
   - fd-find
@@ -10,6 +11,7 @@ apt_packages:
   - htop
   - jq
   - neovim
+  - pipx
   - ripgrep
   - tmux
   - tree

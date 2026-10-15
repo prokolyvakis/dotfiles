@@ -37,6 +37,7 @@
   loop: "{{ agents.pipx }}"
   loop_control:
     label: "{{ item.name }}=={{ item.version }}"
+  when: item.os is not defined or item.os == ansible_os_family
 
 - name: Read registered Claude marketplaces
   ansible.builtin.command: claude plugin marketplace list --json
