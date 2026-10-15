@@ -37,3 +37,5 @@ jobs:
         run: chezmoi init --source=home/ --dry-run --verbose
       - name: Settings merger in a synthetic home
         run: python3 scripts/test-settings-merge.py -v
+      - name: Coordination map covers every declared plugin
+        run: python3 scripts/test-coordination-map.py -v

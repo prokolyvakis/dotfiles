@@ -4,7 +4,7 @@ Hybrid setup: **chezmoi** for dotfiles, **Ansible** for system provisioning.
 
 - `home/` — chezmoi source directory. All dotfiles and `~/.shell/*.sh` modules.
 - `ansible/` — Ansible playbook with roles: preflight, packages, shell, tmux, fonts, node, neovim, agents (macOS).
-- `scripts/` — Docker smoke test.
+- `scripts/` — Docker smoke test, settings-merger test, coordination-map test.
 
 ## Conventions
 
@@ -24,13 +24,14 @@ Hybrid setup: **chezmoi** for dotfiles, **Ansible** for system provisioning.
 ## Testing
 
 - `make lint` — yamllint + ansible-lint (must pass at production profile).
-- `make test` — runs the rendered `modify_settings.json` merger in a synthetic home: invalid input leaves the file untouched, only owned keys change, explicit disables and unknown entries survive, repeated apply is byte-stable, and re-applying an earlier profile changes only its owned value while keeping concurrent user edits.
+- `make test` — runs the rendered `modify_settings.json` merger in a synthetic home: invalid input leaves the file untouched, only owned keys change, explicit disables and unknown entries survive, repeated apply is byte-stable, and re-applying an earlier profile changes only its owned value while keeping concurrent user edits. It also runs the coordination-map test: every plugin declared in `home/.chezmoidata.yaml` has exactly one row in the managed-mode table of `home/dot_claude/coordination.md`.
 - `make docker-test` — full Ubuntu 24.04 smoke test (packages + chezmoi + idempotence).
-- CI runs on push/PR: lint on Ubuntu, chezmoi template verify and the merger test on both macOS and Ubuntu.
+- CI runs on push/PR: lint on Ubuntu; chezmoi template verify, the merger test and the coordination-map test on both macOS and Ubuntu.
 
 ## Workflow
 
 - Dotfile changes: edit in `home/`, run `chezmoi apply`.
 - Package changes: edit `ansible/group_vars/all/{macos,ubuntu}.yml`, run `make system`.
-- Agent plugin/skill changes: edit `home/.chezmoidata.yaml`, run `make system` then `make dotfiles`.
+- Agent plugin/skill changes: edit `home/.chezmoidata.yaml` and add the plugin's row to `home/dot_claude/coordination.md`; run `make test`, then `chezmoi apply --dry-run --verbose` to confirm the model and unrelated settings are unchanged, then `make system` and `make dotfiles`.
+- The `agents` role runs on macOS only; its Ubuntu entries (e.g. pipx `uv`) take effect once the role runs there.
 - After any change: run `make lint` before committing.
