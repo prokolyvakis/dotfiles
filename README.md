@@ -63,7 +63,7 @@ cd ansible && ansible-playbook playbook.yml --tags agents --diff   # agents role
 ## Local models
 
 `home/.chezmoidata.yaml` has a `local_models` block: a local runtime (Ollama),
-two open-weight coding models from different families, and the context length
+one open-weight coding model (the list takes more), and the context length
 the runtime must be started with. It changes no default. The Claude model in
 `settings.json` and Codex's `config.toml` are untouched, and nothing switches
 to a local model on its own.
@@ -74,7 +74,7 @@ start one session on a local model:
 ```sh
 OLLAMA_CONTEXT_LENGTH=64000 ollama serve     # once, in another terminal
 claude-local                                 # default family
-codex-local -f devstral exec "..."           # the other family
+codex-local -f qwen exec "..."               # a family by name
 ```
 
 `codex-local` starts Codex with connected apps off for that session. A local

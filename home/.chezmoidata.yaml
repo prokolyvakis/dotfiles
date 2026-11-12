@@ -119,12 +119,10 @@ local_models:
     # The server must be started with this context length (see the README).
     context_length: 64000
   default: qwen
-  # Two families, so a writer and a reviewer can differ. One loads at a time.
+  # A list, so a second family can be added for a reviewer. One loads at a time.
   families:
     - name: qwen
       tag: "qwen3-coder-next:q4_K_M"
-    - name: devstral
-      tag: "devstral-small-2:24b-instruct-2512-q8_0"
   # No gateway: the runtime serves both hosts' wire formats itself.
   gateway: ""
 
