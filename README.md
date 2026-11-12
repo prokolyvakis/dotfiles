@@ -63,10 +63,13 @@ cd ansible && ansible-playbook playbook.yml --tags agents --diff   # agents role
 ## Security scanners
 
 `home/.chezmoidata.yaml` also declares a `security` set of defensive scanners —
-Semgrep (static analysis), OSV-Scanner (dependencies), Gitleaks (secrets) and
-Trivy (containers and config). The `security` role installs them with Homebrew
-on macOS; they are mainstream tools and carry no credentials. Each tool's exact
-version is recorded when it runs, not pinned here. Ubuntu installation is wired
+Semgrep (static analysis), OSV-Scanner (dependencies), Gitleaks (secrets),
+Trivy (containers and config), and zizmor and actionlint (GitHub Actions
+workflows). The `security` role installs them with Homebrew on macOS; they are
+mainstream tools and carry no credentials. Each tool's exact version is
+recorded when it runs, not pinned here. Cisco's skill-scanner, a static scanner
+for agent skill packages, is a Python tool, so it is pinned in the `pipx` list
+and installed by the `agents` role. Ubuntu installation is wired
 during the full container test.
 
 ```bash

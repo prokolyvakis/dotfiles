@@ -92,6 +92,9 @@ agents:
       version: "0.7.9"
     - name: omnigent
       version: "0.18.0"
+    # Static scanner for agent skill packages; its default analyzers need no key or network.
+    - name: cisco-ai-skill-scanner
+      version: "2.3.2"
     # macOS gets uv from Homebrew.
     - name: uv
       version: "0.13.1"
@@ -112,3 +115,7 @@ security:
       brew: gitleaks
     - name: trivy         # container, IaC and configuration checks
       brew: trivy
+    - name: zizmor        # GitHub Actions workflow security audit
+      brew: zizmor
+    - name: actionlint    # GitHub Actions workflow correctness lint
+      brew: actionlint
