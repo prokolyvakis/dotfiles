@@ -106,6 +106,28 @@ agents:
   peon_ping:
     enabled: true
 
+# Local open-weight models for an explicit, operator-started session. Nothing
+# here changes a default: agents.claude.settings.model above is untouched, and
+# no tool switches to these models on its own. The launchers ~/.local/bin/
+# claude-local and codex-local read this block and refuse to start when the
+# runtime does not answer or the model is not pulled.
+local_models:
+  runtime:
+    name: ollama
+    brew: ollama
+    endpoint: "http://127.0.0.1:11434"
+    # The server must be started with this context length (see the README).
+    context_length: 64000
+  default: qwen
+  # Two families, so a writer and a reviewer can differ. One loads at a time.
+  families:
+    - name: qwen
+      tag: "qwen3-coder-next:q4_K_M"
+    - name: devstral
+      tag: "devstral-small-2:24b-instruct-2512-q8_0"
+  # No gateway: the runtime serves both hosts' wire formats itself.
+  gateway: ""
+
 # Defensive security scanners, installed by the `security` role (macOS now;
 # Ubuntu is wired during the full-setup test). Mainstream tools, no credentials;
 # each scanner's exact version is recorded when it runs, not pinned here.

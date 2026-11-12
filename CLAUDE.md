@@ -20,12 +20,14 @@ Hybrid setup: **chezmoi** for dotfiles, **Ansible** for system provisioning.
 - No hardcoded paths like `/usr/bin/curl` — use bare command names for cross-platform.
 - macOS-only code must be in chezmoi-guarded templates.
 - Agent tooling (Claude/Codex plugins, standalone skills, npm/pipx tools) is declared once in `home/.chezmoidata.yaml`; the `agents` role installs it and `home/dot_claude/modify_settings.json.tmpl` merges the managed keys into `~/.claude/settings.json`. Never manage that file whole: Claude Code and peon-ping write to it.
+- Local open-weight models are declared under `local_models:` in `home/.chezmoidata.yaml`. The launchers `claude-local` and `codex-local` (`home/dot_local/bin/`) read it and must refuse to start rather than fall back; the block must never be read by `modify_settings.json.tmpl`.
 - Defensive security scanners are declared under `security:` in `home/.chezmoidata.yaml` and installed by the `security` role (Homebrew, macOS); add a scanner there, not in a role task.
 
 ## Testing
 
 - `make lint` — yamllint + ansible-lint (must pass at production profile).
 - `make test` — runs the rendered `modify_settings.json` merger in a synthetic home: invalid input leaves the file untouched, only owned keys change, explicit disables and unknown entries survive, repeated apply is byte-stable, and re-applying an earlier profile changes only its owned value while keeping concurrent user edits. It also runs the coordination-map test: every plugin declared in `home/.chezmoidata.yaml` has exactly one row in the managed-mode table of `home/dot_claude/coordination.md`.
+- `make test` also runs the launcher test: with no runtime, or without the model, neither launcher starts its host; with both, each host starts on the requested model only.
 - `make docker-test` — full Ubuntu 24.04 smoke test (packages + chezmoi + idempotence).
 - CI runs on push/PR: lint on Ubuntu; chezmoi template verify, the merger test and the coordination-map test on both macOS and Ubuntu.
 

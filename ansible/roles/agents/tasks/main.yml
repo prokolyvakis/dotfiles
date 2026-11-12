@@ -39,6 +39,45 @@
     label: "{{ item.name }}=={{ item.version }}"
   when: item.os is not defined or item.os == ansible_os_family
 
+# Local open-weight models (local_models in .chezmoidata.yaml). The runtime, the
+# weights and the CLI installers must be on the machine before they are needed:
+# none of them can be downloaded when the network or a provider is unavailable.
+- name: Install the local model runtime
+  community.general.homebrew:
+    name: "{{ local_models.runtime.brew }}"
+    state: present
+  when: ansible_os_family == "Darwin"
+
+- name: List the local models already pulled
+  ansible.builtin.command: ollama list
+  register: agents_local_models
+  changed_when: false
+  failed_when: agents_local_models.rc not in [0, 1]
+
+- name: Pull local model weights that are missing
+  ansible.builtin.command: "ollama pull {{ item.tag }}"
+  loop: "{{ local_models.families }}"
+  loop_control:
+    label: "{{ item.tag }}"
+  when: agents_local_models.rc == 0 and item.tag not in agents_local_models.stdout
+  changed_when: true
+
+- name: Report that the local model runtime is not running
+  ansible.builtin.debug:
+    msg: >-
+      The local model runtime did not answer, so no weights were pulled. Start it with
+      OLLAMA_CONTEXT_LENGTH={{ local_models.runtime.context_length }} ollama serve and run this role again.
+  when: agents_local_models.rc != 0
+
+# Kept in Homebrew's download cache, which `brew cleanup` prunes: a convenience, not an archive.
+- name: Keep the installed CLI installers in the Homebrew cache
+  ansible.builtin.command: "brew fetch {{ item }}"
+  loop:
+    - "--cask claude-code"
+    - "--formula codex"
+  changed_when: false
+  when: ansible_os_family == "Darwin"
+
 - name: Read registered Claude marketplaces
   ansible.builtin.command: claude plugin marketplace list --json
   register: agents_claude_marketplaces

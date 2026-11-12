@@ -1,0 +1,43 @@
+{{- $m := .local_models -}}
+{{- with dict "name" "codex-local" "host" "Codex" "host_command" "codex" "families" $m.families "default" $m.default "endpoint" $m.runtime.endpoint "context_length" $m.runtime.context_length "runtime" $m.runtime.name -}}
+#!/bin/sh
+# {{ .name }}: start {{ .host }} for ONE session on a local open-weight model.
+# Managed by chezmoi from home/.chezmoidata.yaml (local_models). It changes no
+# stored setting and never falls back: if the local runtime does not answer, or
+# the model is not pulled, it stops and says so.
+#   {{ .name }} [-f FAMILY] [{{ .host_command }} arguments...]
+# Families: {{ range .families }}{{ .name }} {{ end }}(default {{ .default }}); LOCAL_MODEL_FAMILY also selects one.
+set -eu
+endpoint=${LOCAL_MODEL_ENDPOINT:-{{ .endpoint }}}
+family=${LOCAL_MODEL_FAMILY:-{{ .default }}}
+if [ "${1:-}" = "-f" ]; then
+    [ $# -ge 2 ] || { echo "{{ .name }}: -f needs a family name" >&2; exit 2; }
+    family=$2
+    shift 2
+fi
+case $family in
+{{- range .families }}
+    {{ .name }}) model='{{ .tag }}' ;;
+{{- end }}
+    *) echo "{{ .name }}: unknown model family '$family' (known: {{ range .families }}{{ .name }} {{ end }})" >&2; exit 2 ;;
+esac
+if ! curl -fsS --max-time 5 "$endpoint/api/version" >/dev/null 2>&1; then
+    cat >&2 <<REFUSAL
+{{ .name }}: refusing to start: no local model runtime answers at $endpoint.
+Start it first:  OLLAMA_CONTEXT_LENGTH={{ .context_length }} ollama serve
+Nothing was started and no other model was used.
+REFUSAL
+    exit 1
+fi
+if ! curl -fsS --max-time 5 "$endpoint/v1/models/$model" >/dev/null 2>&1; then
+    cat >&2 <<REFUSAL
+{{ .name }}: refusing to start: the runtime at $endpoint does not have '$model'.
+Pull it first:  ollama pull $model
+Nothing was started and no other model was used.
+REFUSAL
+    exit 1
+fi
+echo "{{ .name }}: $family = $model at $endpoint (this session only)" >&2
+# A config override, not --oss: the flag is not carried into `exec`, which then refuses the provider.
+exec codex -c 'model_provider="{{ .runtime }}"' -m "$model" -c model_context_window={{ .context_length }} "$@"
+{{ end -}}

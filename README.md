@@ -60,6 +60,30 @@ one row in that map.
 cd ansible && ansible-playbook playbook.yml --tags agents --diff   # agents role only
 ```
 
+## Local models
+
+`home/.chezmoidata.yaml` has a `local_models` block: a local runtime (Ollama),
+two open-weight coding models from different families, and the context length
+the runtime must be started with. It changes no default. The Claude model in
+`settings.json` and Codex's `config.toml` are untouched, and nothing switches
+to a local model on its own.
+
+Two launchers, `~/.local/bin/claude-local` and `~/.local/bin/codex-local`,
+start one session on a local model:
+
+```sh
+OLLAMA_CONTEXT_LENGTH=64000 ollama serve     # once, in another terminal
+claude-local                                 # default family
+codex-local -f devstral exec "..."           # the other family
+```
+
+Each refuses to start, with exit status 1, when the runtime does not answer or
+the model is not pulled; it never falls back to another model. The `agents`
+role installs the runtime, pulls missing weights when the runtime is running,
+and keeps the Claude Code and Codex installers in Homebrew's cache, because
+none of these can be downloaded during an outage. `make test` checks the
+refusals with a fake runtime.
+
 ## Security scanners
 
 `home/.chezmoidata.yaml` also declares a `security` set of defensive scanners —
