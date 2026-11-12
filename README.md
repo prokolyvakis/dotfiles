@@ -77,6 +77,10 @@ claude-local                                 # default family
 codex-local -f devstral exec "..."           # the other family
 ```
 
+`codex-local` starts Codex with connected apps off for that session. A local
+model is sent every app tool's full definition up front, which alone is larger
+than the context; plugins stay on.
+
 Each refuses to start, with exit status 1, when the runtime does not answer or
 the model is not pulled; it never falls back to another model. The `agents`
 role installs the runtime, pulls missing weights when the runtime is running,

@@ -39,5 +39,8 @@ REFUSAL
 fi
 echo "{{ .name }}: $family = $model at $endpoint (this session only)" >&2
 # A config override, not --oss: the flag is not carried into `exec`, which then refuses the provider.
-exec codex -c 'model_provider="{{ .runtime }}"' -m "$model" -c model_context_window={{ .context_length }} "$@"
+# Connected apps are off for this session: a local model gets every app tool's full definition up
+# front (about 450,000 characters here), which alone exceeds the context. Plugins stay on.
+exec codex --disable apps -c 'model_provider="{{ .runtime }}"' -m "$model" \
+    -c model_context_window={{ .context_length }} "$@"
 {{ end -}}

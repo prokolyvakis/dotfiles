@@ -110,7 +110,7 @@ class LauncherTests(unittest.TestCase):
                 for variable in ("ANTHROPIC_MODEL", "ANTHROPIC_DEFAULT_HAIKU_MODEL", "CLAUDE_CODE_SUBAGENT_MODEL"):
                     self.assertIn(f"{variable}={tag}", seen, "A background model would leave the local endpoint's model")
                 self.assertEqual(self.launch("codex-local", "-f", family, "exec", "hi").returncode, 0)
-                self.assertIn(f'model_provider="ollama" -m {tag}', self.log.read_text())
+                self.assertIn(f'argv: --disable apps -c model_provider="ollama" -m {tag}', self.log.read_text())
 
     def test_the_default_model_setting_does_not_read_the_local_block(self):
         merger = (SOURCE / "dot_claude/modify_settings.json.tmpl").read_text()
