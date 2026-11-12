@@ -86,6 +86,10 @@ agents:
       version: "12.11.2"
     - name: skills
       version: "1.8.1"
+    # Local usage reporter: estimates tokens and cost from each agent's own logs.
+    # Report commands only; its statusline and hook features are not used.
+    - name: ccusage
+      version: "20.0.50"
   # An optional `os` (ansible_os_family) limits an entry to one platform.
   pipx:
     - name: graphifyy
