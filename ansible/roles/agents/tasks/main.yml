@@ -96,6 +96,16 @@
   register: agents_claude_plugin_add
   changed_when: agents_claude_plugin_add.rc == 0
 
+- name: Install standalone Claude skills
+  ansible.builtin.command: >-
+    skills add {{ item.source }} --skill {{ item.name }}
+    --agent claude-code --global --copy --yes
+  args:
+    creates: "{{ home_path }}/.claude/skills/{{ item.name }}/SKILL.md"
+  loop: "{{ agents.claude.skills }}"
+  loop_control:
+    label: "{{ item.name }}"
+
 - name: Read registered Codex marketplaces
   ansible.builtin.command: codex plugin marketplace list --json
   register: agents_codex_marketplaces

@@ -13,7 +13,10 @@ than assuming from this list. Samari's generic procedure is in its
 | --- | --- | --- |
 | Debugging method | `superpowers:systematic-debugging` as a method inside the task; Feature Dev's `code-explorer` agent for one bounded source question | Enter the Superpowers brainstorm → plan → subagent cycle unless the user asked for it |
 | Design brief / architecture | Feature Dev's `code-architect` agent for one bounded blueprint; Samari's grilling/codebase-design references | Run the full `/feature-dev` workflow as a side effect |
-| Visual UI work | `frontend-design` for an actual visual brief | Apply it to non-visual changes |
+| Visual UI work | One design voice per brief: `frontend-design` for general direction, `taste-skill` for a marketing or company site, `impeccable` to critique, audit or polish an existing UI | Apply any of them to non-visual changes; stack two on the same page |
+| Diagrams | One per artifact: `archify` (standalone skill) for an interactive diagram or one-page explainer, `diagram-design` for an editorial SVG/HTML figure, `deploy-on-aws` child `aws-architecture-diagram` for AWS icons in draw.io | Redraw the same figure with a second tool; treat a diagram as evidence of the code |
+| Scope discipline | `ponytail` as a bias toward the smallest change that works; `ponytail-review`, `ponytail-audit` and `ponytail-debt` for one bounded pass | Let its ruleset overrule the project's checks, conventions or an accepted design |
+| Learning | `engram` only when the user asks to learn or review a topic | Start a tutoring session inside an engineering task |
 | Domain guidance | `aws-amplify` for Amplify Gen2 only; `databases-on-aws` child `dsql` for Aurora DSQL only; the exact Stripe subskill for the exact question; `context7` for current library docs; `deploy-on-aws` for an authorized deployment phase | Treat a package name as a procedure for its siblings, adopt starter defaults (public API-key data, latest SDK) over an accepted project pin |
 | Verification | Project checks first; one baseline evidence-oriented review (Samari verifier or native reviewer); `pr-review-toolkit` agents (`silent-failure-hunter`, `pr-test-analyzer`, `type-design-analyzer`, `comment-analyzer`) only for an identified gap | Launch every reviewer; count a reviewer's silence as proof |
 | Simplification | One of `code-simplifier` or the toolkit simplifier, before final checks | Run a simplifier after a "final" review without invalidating it |
@@ -83,6 +86,11 @@ this profile, not evidence that the plugin is installed, ready or qualified.
 | `pr-review-toolkit` | One baseline reviewer, then a specialist only for an identified gap; one simplifier |
 | `code-review` | Outside internal review; only inside an authorized PR workflow because it posts |
 | `commit-commands` | One commit executor; push, PR and cleanup are separate authorized effects |
+| `taste-skill` | Visual work on a site only; one design voice per brief; its browser check runs under the browser owner |
+| `impeccable` | Critique, audit or polish of an existing UI; its edit and stop hooks are advisory, never an acceptance check |
+| `ponytail` | Advisory bias only; the assignment's scope and checks win; task board and webhook stay off |
+| `engram` | Off in managed execution; a learning session is the user's own interactive request |
+| `diagram-design` | One figure per request; a writer, so its output is verified like any other artifact |
 | `codex@openai-codex` | Standalone mode only; managed Codex work goes through Omnigent's Codex worker, never a second hop through this plugin |
 | `ralph-loop` | Off in managed execution; an explicit, bounded, isolated experiment only |
 | `aws-amplify` | Affected Gen2 reference only; the project's auth, SDK pins and deployment route win |
@@ -115,6 +123,15 @@ this profile, not evidence that the plugin is installed, ready or qualified.
 | ralph-loop | Stop (active only with `.claude/ralph-loop.local.md`) | Iteration controller | Explicit finite experiment only |
 | deploy-on-aws | PostToolUse Edit/Write on `.drawio` files | Artifact post-processor | Writer; runs before final artifact verification |
 | databases-on-aws | PostToolUse on DSQL transact (prompt) | Advisory verification prompt | Only on DSQL work |
+
+Read from source on 2026-11-12, before first install; confirm against the
+installed versions:
+
+| Owner | Events | Effect class | Rule |
+| --- | --- | --- | --- |
+| ponytail | SessionStart and SubagentStart (inject its ruleset, write `~/.claude/.ponytail-active`, may nudge a statusLine edit), UserPromptSubmit (mode tracker; per-turn task row to `~/.config/ponytail/band/`, optional webhook, empty by default) | Alternative behaviour controller; local telemetry | Advisory under Samari; decline the statusLine nudge, because `modify_settings.json` owns that key; leave the webhook empty |
+| impeccable | SessionStart, PostToolUse Edit/Write, Stop (launcher runs a platform binary, fetched on first use and checked against `engine-checksums.txt`) | Design feedback on UI edits; binary download | Candidate-bound feedback on visual work; ignore elsewhere |
+| engram | SessionStart (at most two lines when reviews are due; local Python, no network) | Advisory reminder | Ignore for task decisions |
 
 Memory division: project records are canonical; `remember` is episodic; an
 Obsidian vault holds source-linked notes with explicit vault and path (Samari's
