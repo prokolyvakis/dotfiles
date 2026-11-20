@@ -17,6 +17,8 @@ agents:
         source: nagisanzenin/engram
       - name: diagram-design
         source: cathrynlavery/diagram-design
+      - name: beautiful-rust
+        source: morganlinton/BeautifulRust
       - name: samari
         # Local development bundle; registered only when this path exists.
         source_path: Documents/code/samari/dist/samari
@@ -46,12 +48,15 @@ agents:
       - stripe@claude-plugins-official
       - superpowers@claude-plugins-official
       - typescript-lsp@claude-plugins-official
+      - clangd-lsp@claude-plugins-official
+      - rust-analyzer-lsp@claude-plugins-official
       - codex@openai-codex
       - taste-skill@taste-skill
       - impeccable@impeccable
       - ponytail@ponytail
       - engram@engram
       - diagram-design@diagram-design
+      - beautiful-rust@beautiful-rust
       - samari@samari
     # Skills published without a plugin manifest, copied into ~/.claude/skills
     # by the `skills` CLI (pinned under npm below).

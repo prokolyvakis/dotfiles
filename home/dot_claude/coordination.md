@@ -23,7 +23,7 @@ than assuming from this list. Samari's generic procedure is in its
 | Commit | `samari:commit` for the message; native git or one chosen command (`commit-commands`) to execute | Dispatch two commit flows |
 | Publishing review | `/code-review` only inside an authorized PR-review workflow (it launches several agents and posts to GitHub) | Use it as a read-only library function |
 | Browser | One controller per target: Playwright for repeatable interaction, Chrome DevTools for console/network/performance | Point both at the same page concurrently |
-| Code navigation | TypeScript LSP for TypeScript; CodeGraph for symbol/impact questions after confirming index freshness | Treat an index as source authority |
+| Code navigation | The language server for the file's language (TypeScript, clangd for C/C++, rust-analyzer for Rust); CodeGraph for symbol/impact questions after confirming index freshness | Treat an index as source authority |
 | Maintenance | `claude-code-setup`, `claude-md-management`, `hookify`, `skill-creator`, `superpowers:diagnosing-superpowers` inside an explicitly bounded maintenance task | Self-reconfigure to make the current task easier |
 | Iteration loop | `/ralph-loop` only as an explicit finite experiment the user requested | Nest it around another controller or an irreversible effect |
 
@@ -100,6 +100,9 @@ this profile, not evidence that the plugin is installed, ready or qualified.
 | `context7` | Minimal queries with approved data egress; verify consequential API facts at the source |
 | `github` | Scoped repository and operation; read-only for review; no duplicate owner beside the native CLI |
 | `typescript-lsp` | TypeScript and JavaScript navigation only; not an acceptance oracle |
+| `clangd-lsp` | C and C++ navigation and diagnostics only (needs `clangd`; Xcode's on macOS); not an acceptance oracle |
+| `rust-analyzer-lsp` | Rust navigation and diagnostics only (needs rustup's `rust-analyzer`); not an acceptance oracle |
+| `beautiful-rust` | Rust style, review and porting guidance; the project's own lints, `cargo` checks and rules win. Claude only: its Codex variant calls the author's hosted server |
 | `playwright` | One browser owner per target, isolated test identities, the approved test proxy when required |
 | `chrome-devtools-mcp` | Investigation under the same browser owner; never a second concurrent controller |
 | `claude-code-setup` | Maintenance scope only; recommendations install nothing |

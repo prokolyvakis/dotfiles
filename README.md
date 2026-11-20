@@ -56,6 +56,11 @@ compose, standalone and when Omnigent dispatches the workers (loaded on demand,
 not on every task). `make test` checks that every declared plugin has exactly
 one row in that map.
 
+The language-server plugins need their servers on `PATH`: `clangd` comes with
+Xcode's command-line tools, and on macOS the `packages` role installs rustup
+(keg-only, added to `PATH` by `~/.shell/path.sh`) with the stable toolchain and
+`rust-analyzer`. Ubuntu does not get the Rust toolchain yet.
+
 ```bash
 cd ansible && ansible-playbook playbook.yml --tags agents --diff   # agents role only
 ```

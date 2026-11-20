@@ -27,7 +27,7 @@ def managed_rows():
 class CoordinationMapTests(unittest.TestCase):
     def test_every_declared_plugin_has_one_managed_rule(self):
         declared = declared_plugins()
-        self.assertEqual(len(declared), 30)
+        self.assertEqual(len(declared), 33)
         rows = managed_rows()
         self.assertEqual(len(rows), len(set(rows)), "Duplicate managed-mode row")
         bare = {plugin.split("@")[0] for plugin in declared}
